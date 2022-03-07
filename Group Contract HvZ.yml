@@ -1,0 +1,31 @@
+#Group Contract HvZ
+
+1. Routine:
+The work takes place according to SCRUMS principles.
+
+- Daily Scrum -
+Standup meeting every day where everyone goes through their work tasks, how it goes, if you need help.
+We work according to agreed Code guidelines (based on PEP 8).
+
+2. Communication in the group:
+Contact through text and voice channels via Discord and via telephone or email if necessary.
+Tasks to work with are listed in the Trello.
+Announce to the rest of the team members if you are late or can not come.
+Do not be late for the scheduled meeting. 
+Constructive discussions about all project-related topics are welcome. 
+
+4. Roles:
+SCRUM master: Rotating
+Developer: Gabriel Andersson, Thomas Annerfeldt,  Kitt Cheung, Joachim Nilsson
+
+5. Resources:
+Number of group members: 4
+Time: 2 sprints every week.
+Basic working hours: within the hours 08.00 -16.30
+
+6. Responsibilities and consequences:
+Work is distributed continuously. It is important to put your name as "Owner" on the task-cards you work with, and to ensure that these are placed in the right category, for example. "Ready for development", "In development", "Completed".
+At the end of the Task, you are generally expected to pick a new Task to work with from Trello, or offer help to another group member's ongoing story.
+If you think that there are missing Tasks which should be a part of the project, then you are free to create these Tasks in Trello.
+If you have problems implementing your task, you should raise this at a SCRUM meeting or ask for help from other group members.
+In the event of absence, the member is responsible for contacting the group leader or another group member for the transfer of work tasks.
