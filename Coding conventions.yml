@@ -1,0 +1,35 @@
+Git branching:
+    1. Create a branch, name it according feature you intend to work on. 
+    2. While working in the branch, stick to the feature of the branch. 
+    3. When you're done, send a merge request and assign it to the merger of the week.
+Before commiting: 
+    * Format the code with prettier.
+    * Comment the code, be as thorough as possible (within reason lul).
+
+Code conventions:
+    General JS: 
+    * No semicolons 
+    * Tab, not space
+    * Space around operators and after commas, e.g. ( = + - ), this, is, code,
+    Casing JS:
+        functions, camelCase
+        variables, camelCase
+        constants, UPPER
+    Casing C#:
+        functions, PascalCase
+        class, PascalCase
+        record, PascalCase
+        struct, PascalCase
+        variabes, camelCase
+        interface, IPascalCase
+        private field, _camelCase
+        internal, _camelCase
+
+    General code:
+    * By default, one file per class
+    * Class files should be Field, constructor, methods in that order
+    * By default, object content should be divided with one line per attribute, but use one line
+        objects for shorter ones.
+    * Max line length, 80 chars. Break it at a comma, operator or similar
+    * 
+
