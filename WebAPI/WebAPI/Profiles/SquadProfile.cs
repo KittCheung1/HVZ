@@ -1,19 +1,19 @@
 ﻿using AutoMapper;
 using WebAPI.Models.Domain;
-using WebAPI.Models.DTO.ChatDTO;
+using WebAPI.Models.DTO.Squad;
 
 namespace WebAPI.Profiles
 {
-    public class ChatProfile: Profile
+    public class SquadProfile: Profile
     {
-        public ChatProfile()
+        public SquadProfile()
         {
             //Creates maps between two different classes to only show relevant and objective data about each model, one for each DTO
-            CreateMap<Chat, ReadChatDTO>()
+            CreateMap<Squad, ReadSquadDTO>()
                 .ReverseMap();
-            CreateMap<Chat, CreateChatDTO>()
+            CreateMap<Squad, CreateSquadDTO>()
                 .ReverseMap();
-            CreateMap<Chat, EditChatDTO>()
+            CreateMap<Squad, EditSquadDTO>()
                 .ReverseMap();
         }
     }

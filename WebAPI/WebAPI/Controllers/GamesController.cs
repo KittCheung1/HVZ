@@ -72,9 +72,6 @@ namespace WebAPI.Controllers
             return _mapper.Map<List<ReadPlayerDTO>>(game.Players.ToList());
         }
 
-
-        // Will have to resolve relationship in order to make these two work, also add icollection of kills in player
-
         /// <summary>
         /// Gets all Kills in a game based on Id
         /// </summary>

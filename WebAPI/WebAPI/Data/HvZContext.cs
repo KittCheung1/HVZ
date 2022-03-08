@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
+using WebAPI.Models.Domain;
 
 namespace WebAPI.Data
 {
@@ -13,6 +14,10 @@ namespace WebAPI.Data
         public DbSet<Player> Players { get; set; }
 
         public DbSet<Kill> Kills { get; set; }
+
+        public DbSet<Squad> Squads { get; set; }
+
+        public DbSet<Chat> Chats { get; set; }
 
 
         //Creates base options for the database
@@ -54,8 +59,8 @@ namespace WebAPI.Data
                     Id = 1,
                     UserId = 1,
                     GameId = 1,
-                    Is_Human = 1,
-                    Is_Patient_Zero = 0,
+                    Is_Human = true,
+                    Is_Patient_Zero = false,
                     Bite_Code = "JagBetDig434"
 
                 });
@@ -65,8 +70,8 @@ namespace WebAPI.Data
             Id = 2,
             UserId = 2,
             GameId = 1,
-            Is_Human = 0,
-            Is_Patient_Zero = 1,
+            Is_Human = false,
+            Is_Patient_Zero = true,
             Bite_Code = "JagBetDig123"
 
         });
@@ -82,7 +87,6 @@ namespace WebAPI.Data
             });
 
 
-
             modelBuilder.Entity<Kill>()
                 .HasOne(k => k.Killer)
                 .WithMany(k => k.Kills)
@@ -95,8 +99,47 @@ namespace WebAPI.Data
                .HasForeignKey(k => k.VictimId)
                .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Squad>()
+                .HasData(new Squad
+                {
+                    Id = 1,
+                    GameID = 1,
+                    Name = "Mega-squad",
+                    IsHuman = true,
+                });
 
 
+            modelBuilder.Entity<Chat>()
+              .HasOne(k => k.Player)
+              .WithMany(k => k.PlayerChats)
+              .HasForeignKey(k => k.PlayerId)
+              .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Chat>()
+             .HasOne(k => k.Squad)
+             .WithMany(k => k.SquadChats)
+             .HasForeignKey(k => k.SquadId)
+             .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Chat>()
+             .HasOne(k => k.Game)
+             .WithMany(k => k.GameChats)
+             .HasForeignKey(k => k.GameId)
+             .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Chat>()
+              .HasData(new Chat
+              {
+                  Id = 1,
+                  GameId = 1,
+                  PlayerId = 2,
+                  SquadId = 1,
+                  Message = "Im the best, u scrubz",
+                  Is_Human_Global = true,
+                  Is_Zombie_Global = false,
+                  Chat_Time = "13:04"
+              });
 
             //modelBuilder.Entity<Movie>()
             //    .HasMany(p => p.Characters)
@@ -112,6 +155,6 @@ namespace WebAPI.Data
             //    ));
         }
 
-  
+
     }
 }

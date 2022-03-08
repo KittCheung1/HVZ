@@ -22,6 +22,95 @@ namespace WebAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("WebAPI.Models.Domain.Chat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Chat_Time")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Is_Human_Global")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Is_Zombie_Global")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SquadId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.HasIndex("SquadId");
+
+                    b.ToTable("Chats");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Chat_Time = "13:04",
+                            GameId = 1,
+                            Is_Human_Global = true,
+                            Is_Zombie_Global = false,
+                            Message = "Im the best, u scrubz",
+                            PlayerId = 2,
+                            SquadId = 1
+                        });
+                });
+
+            modelBuilder.Entity("WebAPI.Models.Domain.Squad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("GameID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsHuman")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameID");
+
+                    b.ToTable("Squads");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            GameID = 1,
+                            IsHuman = true,
+                            Name = "Mega-squad"
+                        });
+                });
+
             modelBuilder.Entity("WebAPI.Models.Game", b =>
                 {
                     b.Property<int>("Id")
@@ -128,11 +217,11 @@ namespace WebAPI.Migrations
                     b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Is_Human")
-                        .HasColumnType("int");
+                    b.Property<bool>("Is_Human")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("Is_Patient_Zero")
-                        .HasColumnType("int");
+                    b.Property<bool>("Is_Patient_Zero")
+                        .HasColumnType("bit");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -149,10 +238,10 @@ namespace WebAPI.Migrations
                         new
                         {
                             Id = 1,
-                            Bite_Code = "JagBetDig123",
+                            Bite_Code = "JagBetDig434",
                             GameId = 1,
-                            Is_Human = 1,
-                            Is_Patient_Zero = 0,
+                            Is_Human = true,
+                            Is_Patient_Zero = false,
                             UserId = 1
                         },
                         new
@@ -160,8 +249,8 @@ namespace WebAPI.Migrations
                             Id = 2,
                             Bite_Code = "JagBetDig123",
                             GameId = 1,
-                            Is_Human = 0,
-                            Is_Patient_Zero = 1,
+                            Is_Human = false,
+                            Is_Patient_Zero = true,
                             UserId = 2
                         });
                 });
@@ -201,6 +290,44 @@ namespace WebAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("WebAPI.Models.Domain.Chat", b =>
+                {
+                    b.HasOne("WebAPI.Models.Game", "Game")
+                        .WithMany("GameChats")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Models.Player", "Player")
+                        .WithMany("PlayerChats")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Models.Domain.Squad", "Squad")
+                        .WithMany("SquadChats")
+                        .HasForeignKey("SquadId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Player");
+
+                    b.Navigation("Squad");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.Domain.Squad", b =>
+                {
+                    b.HasOne("WebAPI.Models.Game", "Game")
+                        .WithMany("Squads")
+                        .HasForeignKey("GameID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+                });
+
             modelBuilder.Entity("WebAPI.Models.Kill", b =>
                 {
                     b.HasOne("WebAPI.Models.Game", "Game")
@@ -237,7 +364,7 @@ namespace WebAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("WebAPI.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Players")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -247,9 +374,18 @@ namespace WebAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.Domain.Squad", b =>
+                {
+                    b.Navigation("SquadChats");
+                });
+
             modelBuilder.Entity("WebAPI.Models.Game", b =>
                 {
+                    b.Navigation("GameChats");
+
                     b.Navigation("Players");
+
+                    b.Navigation("Squads");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Player", b =>
@@ -257,6 +393,13 @@ namespace WebAPI.Migrations
                     b.Navigation("Deaths");
 
                     b.Navigation("Kills");
+
+                    b.Navigation("PlayerChats");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.User", b =>
+                {
+                    b.Navigation("Players");
                 });
 #pragma warning restore 612, 618
         }

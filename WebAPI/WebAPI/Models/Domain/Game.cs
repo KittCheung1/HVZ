@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebAPI.Models.Domain;
 
 namespace WebAPI.Models
 {
@@ -20,5 +21,7 @@ namespace WebAPI.Models
         public double? Se_lng { get; set; }
 
         public ICollection<Player> Players { get; set; }
+        public ICollection<Chat> GameChats { get; set; }
+        public ICollection<Squad> Squads { get; set; }
     }
 }
