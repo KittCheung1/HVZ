@@ -4,12 +4,14 @@
 
 <template>
 <div>
-    <h1>
-        Lobby
+
+    <div class="Title">
+        <h1>
+            Lobby
     </h1>
 </div>
 
-<div>
+<div class="GameDiv">
     <div>
         Game1
     </div>
@@ -26,8 +28,16 @@
         Game4
     </div>
 </div>
+        </div>
 
 </template>
 
 <style>
+.Title{
+    text-align: center;
+}
+
+.GameDiv{
+
+}
 </style>
