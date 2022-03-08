@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Data;
 using WebAPI.DTO.GameDTO;
+using WebAPI.DTO.PlayerDTO;
 using WebAPI.Models;
+using WebAPI.Models.DTO.KillDTO;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class GamesController : ControllerBase
     {
@@ -30,14 +32,16 @@ namespace WebAPI.Controllers
         /// Get all Games
         /// </summary>
         /// <returns></returns>
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReadGameDTO>>> GetGames()
         {
-          return  _mapper.Map<List<ReadGameDTO>>(await _context.Games.ToListAsync());
+            return _mapper.Map<List<ReadGameDTO>>(await _context.Games.ToListAsync());
         }
 
-        // GET: api/Games/5
+        /// <summary>
+        /// Gets a game based on Id
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<ReadGameDTO>> GetGame(int id)
         {
@@ -52,7 +56,73 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Update a Game (Does not work as intented)
+        /// Gets all Players in a game based on Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<ReadPlayerDTO>>> GetPlayersInGame(int id)
+        {
+            var game = _context.Games.Include(g => g.Players).FirstOrDefault(p => p.Id == id);
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+
+            return _mapper.Map<List<ReadPlayerDTO>>(game.Players.ToList());
+        }
+
+
+        // Will have to resolve relationship in order to make these two work, also add icollection of kills in player
+
+        /// <summary>
+        /// Gets all Kills in a game based on Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<ReadKillDTO>>> GetKillsInGame(int id)
+        {
+            var game = _context.Games.Include(g => g.Players).ThenInclude(p => p.Kills).FirstOrDefault(p => p.Id == id);
+
+            List<Kill> listOfKills = new List<Kill>();
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+
+            foreach (Player player in game.Players)
+            {
+                foreach (Kill kill in player.Kills)
+                {
+                    listOfKills.Add(kill);
+                }
+            }
+
+            return _mapper.Map<List<ReadKillDTO>>(listOfKills.ToList());
+        }
+
+
+
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<List<ReadPlayerDTO>>> GetKillInGame(int gameId, int killId)
+        //{
+        //    var game = _context.Games.Include(g => g.Players).FirstOrDefault(p => p.Id == id);
+
+        //    if (game == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return _mapper.Map<List<ReadPlayerDTO>>(game.Players.ToList());
+        //}
+
+
+
+
+
+        /// <summary>
+        /// Update a Game based on Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -87,7 +157,6 @@ namespace WebAPI.Controllers
         /// Creates a new game
         /// </summary>
         /// <returns></returns>
-
         [HttpPost]
         public async Task<ActionResult<Game>> PostGame(CreateGameDTO dtoGame)
         {
