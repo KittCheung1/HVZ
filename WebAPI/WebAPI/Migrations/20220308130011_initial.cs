@@ -215,6 +215,40 @@ namespace WebAPI.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SquadCheckIns",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GameId = table.Column<int>(type: "int", nullable: false),
+                    SquadId = table.Column<int>(type: "int", nullable: false),
+                    SquadmemberId = table.Column<int>(type: "int", nullable: false),
+                    Start_Time = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    End_Time = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Lat = table.Column<double>(type: "float", nullable: false),
+                    Lng = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SquadCheckIns", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SquadCheckIns_Games_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Games",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SquadCheckIns_SquadMembers_SquadmemberId",
+                        column: x => x.SquadmemberId,
+                        principalTable: "SquadMembers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SquadCheckIns_Squads_SquadId",
+                        column: x => x.SquadId,
+                        principalTable: "Squads",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "Games",
                 columns: new[] { "Id", "Game_state", "Name", "Nw_lat", "Nw_lng", "Se_lat", "Se_lng" },
@@ -264,6 +298,11 @@ namespace WebAPI.Migrations
                 columns: new[] { "Id", "GameId", "PlayerId", "Rank", "SquadId" },
                 values: new object[] { 1, 1, 2, "Generals", 1 });
 
+            migrationBuilder.InsertData(
+                table: "SquadCheckIns",
+                columns: new[] { "Id", "End_Time", "GameId", "Lat", "Lng", "SquadId", "SquadmemberId", "Start_Time" },
+                values: new object[] { 1, "14:20", 1, 41.231299999999997, 2.21312, 1, 1, "13:37" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Chats_GameId",
                 table: "Chats",
@@ -310,6 +349,21 @@ namespace WebAPI.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SquadCheckIns_GameId",
+                table: "SquadCheckIns",
+                column: "GameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SquadCheckIns_SquadId",
+                table: "SquadCheckIns",
+                column: "SquadId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SquadCheckIns_SquadmemberId",
+                table: "SquadCheckIns",
+                column: "SquadmemberId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SquadMembers_GameId",
                 table: "SquadMembers",
                 column: "GameId");
@@ -340,6 +394,9 @@ namespace WebAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Missions");
+
+            migrationBuilder.DropTable(
+                name: "SquadCheckIns");
 
             migrationBuilder.DropTable(
                 name: "SquadMembers");

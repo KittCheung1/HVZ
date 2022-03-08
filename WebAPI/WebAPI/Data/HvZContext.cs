@@ -23,6 +23,7 @@ namespace WebAPI.Data
 
         public DbSet<Squadmember> SquadMembers { get; set; }
 
+        public DbSet<SquadCheckIn> SquadCheckIns { get; set; }
 
         //Creates base options for the database
         public HvZContext(DbContextOptions options) : base(options)
@@ -181,6 +182,37 @@ namespace WebAPI.Data
             modelBuilder.Entity<Squadmember>()
              .HasOne(k => k.Game)
              .WithMany(k => k.Squadmembers)
+             .HasForeignKey(k => k.GameId)
+             .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<SquadCheckIn>()
+         .HasData(new SquadCheckIn
+         {
+             Id = 1,
+             GameId = 1,
+             SquadId = 1,
+             SquadmemberId = 1,
+             Start_Time = "13:37",
+             End_Time = "14:20",
+             Lat = 41.2313,
+             Lng = 2.21312
+         });
+
+            modelBuilder.Entity<SquadCheckIn>()
+        .HasOne(k => k.Squadmember)
+        .WithMany(k => k.SquadCheckIns)
+        .HasForeignKey(k => k.SquadmemberId)
+        .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<SquadCheckIn>()
+             .HasOne(k => k.Squad)
+             .WithMany(k => k.SquadCheckIns)
+             .HasForeignKey(k => k.SquadId)
+             .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<SquadCheckIn>()
+             .HasOne(k => k.Game)
+             .WithMany(k => k.SquadCheckIns)
              .HasForeignKey(k => k.GameId)
              .OnDelete(DeleteBehavior.NoAction);
 

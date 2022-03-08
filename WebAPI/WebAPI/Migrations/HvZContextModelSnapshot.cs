@@ -159,6 +159,61 @@ namespace WebAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("WebAPI.Models.Domain.SquadCheckIn", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("End_Time")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Lat")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Lng")
+                        .HasColumnType("float");
+
+                    b.Property<int>("SquadId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SquadmemberId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Start_Time")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("SquadId");
+
+                    b.HasIndex("SquadmemberId");
+
+                    b.ToTable("SquadCheckIns");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            End_Time = "14:20",
+                            GameId = 1,
+                            Lat = 41.231299999999997,
+                            Lng = 2.21312,
+                            SquadId = 1,
+                            SquadmemberId = 1,
+                            Start_Time = "13:37"
+                        });
+                });
+
             modelBuilder.Entity("WebAPI.Models.Domain.Squadmember", b =>
                 {
                     b.Property<int>("Id")
@@ -429,6 +484,33 @@ namespace WebAPI.Migrations
                     b.Navigation("Game");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.Domain.SquadCheckIn", b =>
+                {
+                    b.HasOne("WebAPI.Models.Game", "Game")
+                        .WithMany("SquadCheckIns")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Models.Domain.Squad", "Squad")
+                        .WithMany("SquadCheckIns")
+                        .HasForeignKey("SquadId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Models.Domain.Squadmember", "Squadmember")
+                        .WithMany("SquadCheckIns")
+                        .HasForeignKey("SquadmemberId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Squad");
+
+                    b.Navigation("Squadmember");
+                });
+
             modelBuilder.Entity("WebAPI.Models.Domain.Squadmember", b =>
                 {
                     b.HasOne("WebAPI.Models.Game", "Game")
@@ -506,7 +588,14 @@ namespace WebAPI.Migrations
                 {
                     b.Navigation("SquadChats");
 
+                    b.Navigation("SquadCheckIns");
+
                     b.Navigation("Squadmembers");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.Domain.Squadmember", b =>
+                {
+                    b.Navigation("SquadCheckIns");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Game", b =>
@@ -516,6 +605,8 @@ namespace WebAPI.Migrations
                     b.Navigation("Missions");
 
                     b.Navigation("Players");
+
+                    b.Navigation("SquadCheckIns");
 
                     b.Navigation("Squadmembers");
 
