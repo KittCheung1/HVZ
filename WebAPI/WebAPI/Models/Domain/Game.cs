@@ -23,5 +23,6 @@ namespace WebAPI.Models
         public ICollection<Player> Players { get; set; }
         public ICollection<Chat> GameChats { get; set; }
         public ICollection<Squad> Squads { get; set; }
+        public ICollection<Mission> Missions { get; set; }
     }
 }

@@ -19,6 +19,8 @@ namespace WebAPI.Data
 
         public DbSet<Chat> Chats { get; set; }
 
+        public DbSet<Mission> Missions { get; set; }
+
 
         //Creates base options for the database
         public HvZContext(DbContextOptions options) : base(options)
@@ -139,6 +141,17 @@ namespace WebAPI.Data
                   Is_Human_Global = true,
                   Is_Zombie_Global = false,
                   Chat_Time = "13:04"
+              });
+
+            modelBuilder.Entity<Mission>()
+              .HasData(new Mission
+              {
+                  Id = 1,
+                  GameId = 1,
+                  Name = "Secret Coop mission",
+                  Is_Human_Visible = false,
+                  Is_Zombie_Visible = true,
+                  Description = "Shop energy drinks at coop",
               });
 
             //modelBuilder.Entity<Movie>()
