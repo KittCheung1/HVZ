@@ -159,6 +159,48 @@ namespace WebAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("WebAPI.Models.Domain.Squadmember", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Rank")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SquadId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.HasIndex("SquadId");
+
+                    b.ToTable("SquadMembers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            GameId = 1,
+                            PlayerId = 2,
+                            Rank = "Generals",
+                            SquadId = 1
+                        });
+                });
+
             modelBuilder.Entity("WebAPI.Models.Game", b =>
                 {
                     b.Property<int>("Id")
@@ -368,7 +410,7 @@ namespace WebAPI.Migrations
             modelBuilder.Entity("WebAPI.Models.Domain.Mission", b =>
                 {
                     b.HasOne("WebAPI.Models.Game", "Game")
-                        .WithMany()
+                        .WithMany("Missions")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -385,6 +427,33 @@ namespace WebAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Game");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.Domain.Squadmember", b =>
+                {
+                    b.HasOne("WebAPI.Models.Game", "Game")
+                        .WithMany("Squadmembers")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Models.Player", "Player")
+                        .WithMany("Squadmembers")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Models.Domain.Squad", "Squad")
+                        .WithMany("Squadmembers")
+                        .HasForeignKey("SquadId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Player");
+
+                    b.Navigation("Squad");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Kill", b =>
@@ -436,13 +505,19 @@ namespace WebAPI.Migrations
             modelBuilder.Entity("WebAPI.Models.Domain.Squad", b =>
                 {
                     b.Navigation("SquadChats");
+
+                    b.Navigation("Squadmembers");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Game", b =>
                 {
                     b.Navigation("GameChats");
 
+                    b.Navigation("Missions");
+
                     b.Navigation("Players");
+
+                    b.Navigation("Squadmembers");
 
                     b.Navigation("Squads");
                 });
@@ -454,6 +529,8 @@ namespace WebAPI.Migrations
                     b.Navigation("Kills");
 
                     b.Navigation("PlayerChats");
+
+                    b.Navigation("Squadmembers");
                 });
 
             modelBuilder.Entity("WebAPI.Models.User", b =>

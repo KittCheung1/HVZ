@@ -17,5 +17,6 @@ namespace WebAPI.Models
         public ICollection<Kill> Kills { get; set; }
         public ICollection<Kill> Deaths { get; set; }
         public ICollection<Chat> PlayerChats { get; set; }
+        public ICollection<Squadmember> Squadmembers { get; set; }
     }
 }

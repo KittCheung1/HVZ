@@ -41,6 +41,31 @@ namespace WebAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Missions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GameId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Is_Human_Visible = table.Column<bool>(type: "bit", nullable: false),
+                    Is_Zombie_Visible = table.Column<bool>(type: "bit", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Start_time = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    End_time = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Missions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Missions_Games_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Games",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Squads",
                 columns: table => new
                 {
@@ -159,6 +184,37 @@ namespace WebAPI.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SquadMembers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GameId = table.Column<int>(type: "int", nullable: false),
+                    SquadId = table.Column<int>(type: "int", nullable: false),
+                    PlayerId = table.Column<int>(type: "int", nullable: false),
+                    Rank = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SquadMembers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SquadMembers_Games_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Games",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SquadMembers_Players_PlayerId",
+                        column: x => x.PlayerId,
+                        principalTable: "Players",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SquadMembers_Squads_SquadId",
+                        column: x => x.SquadId,
+                        principalTable: "Squads",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "Games",
                 columns: new[] { "Id", "Game_state", "Name", "Nw_lat", "Nw_lng", "Se_lat", "Se_lng" },
@@ -175,14 +231,18 @@ namespace WebAPI.Migrations
                 values: new object[] { 2, "Gunvald", "Larsson" });
 
             migrationBuilder.InsertData(
-                table: "Players",
-                columns: new[] { "Id", "Bite_Code", "GameId", "Is_Human", "Is_Patient_Zero", "UserId" },
-                values: new object[] { 1, "JagBetDig434", 1, true, false, 1 });
+                table: "Missions",
+                columns: new[] { "Id", "Description", "End_time", "GameId", "Is_Human_Visible", "Is_Zombie_Visible", "Name", "Start_time" },
+                values: new object[] { 1, "Shop energy drinks at coop", null, 1, false, true, "Secret Coop mission", null });
 
             migrationBuilder.InsertData(
                 table: "Players",
                 columns: new[] { "Id", "Bite_Code", "GameId", "Is_Human", "Is_Patient_Zero", "UserId" },
-                values: new object[] { 2, "JagBetDig123", 1, false, true, 2 });
+                values: new object[,]
+                {
+                    { 1, "JagBetDig434", 1, true, false, 1 },
+                    { 2, "JagBetDig123", 1, false, true, 2 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Squads",
@@ -198,6 +258,11 @@ namespace WebAPI.Migrations
                 table: "Kills",
                 columns: new[] { "Id", "GameId", "KillerId", "Lat", "Lng", "Story", "Time_Of_Death", "VictimId" },
                 values: new object[] { 1, 1, 1, null, null, null, "10:33", 2 });
+
+            migrationBuilder.InsertData(
+                table: "SquadMembers",
+                columns: new[] { "Id", "GameId", "PlayerId", "Rank", "SquadId" },
+                values: new object[] { 1, 1, 2, "Generals", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Chats_GameId",
@@ -230,6 +295,11 @@ namespace WebAPI.Migrations
                 column: "VictimId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Missions_GameId",
+                table: "Missions",
+                column: "GameId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Players_GameId",
                 table: "Players",
                 column: "GameId");
@@ -238,6 +308,21 @@ namespace WebAPI.Migrations
                 name: "IX_Players_UserId",
                 table: "Players",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SquadMembers_GameId",
+                table: "SquadMembers",
+                column: "GameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SquadMembers_PlayerId",
+                table: "SquadMembers",
+                column: "PlayerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SquadMembers_SquadId",
+                table: "SquadMembers",
+                column: "SquadId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Squads_GameID",
@@ -254,16 +339,22 @@ namespace WebAPI.Migrations
                 name: "Kills");
 
             migrationBuilder.DropTable(
-                name: "Squads");
+                name: "Missions");
+
+            migrationBuilder.DropTable(
+                name: "SquadMembers");
 
             migrationBuilder.DropTable(
                 name: "Players");
 
             migrationBuilder.DropTable(
-                name: "Games");
+                name: "Squads");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Games");
         }
     }
 }

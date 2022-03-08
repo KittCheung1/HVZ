@@ -21,6 +21,8 @@ namespace WebAPI.Data
 
         public DbSet<Mission> Missions { get; set; }
 
+        public DbSet<Squadmember> SquadMembers { get; set; }
+
 
         //Creates base options for the database
         public HvZContext(DbContextOptions options) : base(options)
@@ -153,6 +155,35 @@ namespace WebAPI.Data
                   Is_Zombie_Visible = true,
                   Description = "Shop energy drinks at coop",
               });
+
+            modelBuilder.Entity<Squadmember>()
+            .HasData(new Squadmember
+            {
+                Id = 1,
+                GameId = 1,
+                PlayerId = 2,
+                SquadId = 1,
+                Rank = "Generals"
+            });
+
+            modelBuilder.Entity<Squadmember>()
+       .HasOne(k => k.Player)
+       .WithMany(k => k.Squadmembers)
+       .HasForeignKey(k => k.PlayerId)
+       .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Squadmember>()
+             .HasOne(k => k.Squad)
+             .WithMany(k => k.Squadmembers)
+             .HasForeignKey(k => k.SquadId)
+             .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Squadmember>()
+             .HasOne(k => k.Game)
+             .WithMany(k => k.Squadmembers)
+             .HasForeignKey(k => k.GameId)
+             .OnDelete(DeleteBehavior.NoAction);
+
 
             //modelBuilder.Entity<Movie>()
             //    .HasMany(p => p.Characters)

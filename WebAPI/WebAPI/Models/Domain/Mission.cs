@@ -1,7 +1,10 @@
-﻿namespace WebAPI.Models.Domain
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebAPI.Models.Domain
 {
     public class Mission
     {
+        [Key]
         public int Id { get; set; }
         public Game Game { get; set; }
         public int GameId { get; set; }

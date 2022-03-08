@@ -11,5 +11,6 @@ namespace WebAPI.Models.Domain
         public string Name { get; set; }
         public bool IsHuman { get; set; }
         public ICollection<Chat> SquadChats { get; set; }
+        public ICollection<Squadmember> Squadmembers { get; set; }
     }
 }
