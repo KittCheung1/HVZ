@@ -75,7 +75,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Gets a specific players in a game based on Game Id and Player Id
+        /// Gets a specific player in a game based on Game Id and Player Id
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -125,6 +125,32 @@ namespace WebAPI.Controllers
             }
 
             return _mapper.Map<List<ReadKillDTO>>(listOfKills.ToList());
+        }
+
+
+        /// <summary>
+        /// Gets a specific kill in a game based on Game Id and kill Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("game/{gameid}/kill/{killid}")]
+        public async Task<ActionResult<ReadKillDTO>> GetKillInGame(int gameid, int killid)
+        {
+            var game = _context.Games.Include(g => g.Kills).FirstOrDefault(p => p.Id == gameid);
+            Kill chosen_kill = new Kill();
+            foreach (Kill kill in game.Kills)
+            {
+                if (kill.Id == killid)
+                {
+                    chosen_kill = kill;
+                }
+            }
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+            return _mapper.Map<ReadKillDTO>(chosen_kill);
         }
 
         /// <summary>

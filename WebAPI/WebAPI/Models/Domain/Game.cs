@@ -19,5 +19,6 @@ namespace WebAPI.Models
         public ICollection<Mission> Missions { get; set; }
         public ICollection<Squadmember> Squadmembers { get; set; }
         public ICollection<SquadCheckIn> SquadCheckIns { get; set; }
+        public ICollection<Kill> Kills { get; set; }
     }
 }
