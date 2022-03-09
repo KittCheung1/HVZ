@@ -1,6 +1,7 @@
 <script setup>
 import Lobby from "../components/LandingPage/Lobby.vue";
 import Login from "../components/LandingPage/Login.vue";
+import GameLobbies from "../components/LandingPage/GameLobbies.vue";
 
 </script>
 
@@ -10,7 +11,7 @@ import Login from "../components/LandingPage/Login.vue";
             <Login />
         </div>
         <div class="LoginDiv col-md-6">
-            <Lobby />
+            <GameLobbies />
         </div>
     </div>
 </template>
