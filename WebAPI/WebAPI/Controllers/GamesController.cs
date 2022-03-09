@@ -11,7 +11,10 @@ using WebAPI.Data;
 using WebAPI.DTO.GameDTO;
 using WebAPI.DTO.PlayerDTO;
 using WebAPI.Models;
+using WebAPI.Models.DTO.ChatDTO;
 using WebAPI.Models.DTO.KillDTO;
+using WebAPI.Models.DTO.MissionDTO;
+using WebAPI.Models.DTO.Squad;
 
 namespace WebAPI.Controllers
 {
@@ -56,7 +59,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Gets all Players in a game based on Id
+        /// Gets all Players in a game based on Game Id
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id}")]
@@ -68,12 +71,37 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
-
             return _mapper.Map<List<ReadPlayerDTO>>(game.Players.ToList());
         }
 
         /// <summary>
-        /// Gets all Kills in a game based on Id
+        /// Gets a specific players in a game based on Game Id and Player Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("game/{gameid}/player/{playerid}")]
+        public async Task<ActionResult<ReadPlayerDTO>> GetPlayerInGame(int gameid, int playerid)
+        {
+            var game = _context.Games.Include(g => g.Players).FirstOrDefault(p => p.Id == gameid);
+            Player chosen_player = new Player();
+            foreach (Player player in game.Players)
+            {
+                if(player.Id == playerid)
+                {
+                    chosen_player = player;
+                }
+            }
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+            return _mapper.Map<ReadPlayerDTO>(chosen_player);
+        }
+
+
+        /// <summary>
+        /// Gets all Kills in a game based on Game Id
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id}")]
@@ -99,23 +127,54 @@ namespace WebAPI.Controllers
             return _mapper.Map<List<ReadKillDTO>>(listOfKills.ToList());
         }
 
+        /// <summary>
+        /// Gets all Missions in a game based on Game Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<ReadMissionDTO>>> GetMissionsInGame(int id)
+        {
+            var game = _context.Games.Include(g => g.Missions).FirstOrDefault(p => p.Id == id);
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+            return _mapper.Map<List<ReadMissionDTO>>(game.Missions.ToList());
+        }
+
+        /// <summary>
+        /// Gets all Squads in a game based on Game Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<ReadSquadDTO>>> GetSquadsInGame(int id)
+        {
+            var game = _context.Games.Include(g => g.Squads).FirstOrDefault(p => p.Id == id);
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+            return _mapper.Map<List<ReadSquadDTO>>(game.Squads.ToList());
+        }
 
 
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<List<ReadPlayerDTO>>> GetKillInGame(int gameId, int killId)
-        //{
-        //    var game = _context.Games.Include(g => g.Players).FirstOrDefault(p => p.Id == id);
+        /// <summary>
+        /// Gets all Chats in a game based on Game Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<ReadChatDTO>>> GetChatsInGame(int id)
+        {
+            var game = _context.Games.Include(g => g.GameChats).FirstOrDefault(p => p.Id == id);
 
-        //    if (game == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return _mapper.Map<List<ReadPlayerDTO>>(game.Players.ToList());
-        //}
-
-
-
+            if (game == null)
+            {
+                return NotFound();
+            }
+            return _mapper.Map<List<ReadChatDTO>>(game.GameChats.ToList());
+        }
 
 
         /// <summary>

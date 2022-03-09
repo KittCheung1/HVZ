@@ -40,6 +40,7 @@ namespace WebAPI.Data
                     Id = 1,
                     First_Name = "Martin",
                     Last_Name = "Späck",
+                    Is_Admin = true,
                 });
             modelBuilder.Entity<User>()
              .HasData(new User
