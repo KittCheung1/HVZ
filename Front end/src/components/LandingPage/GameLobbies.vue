@@ -9,7 +9,7 @@
 
         <template v-else-if="gameItem.game_state ===2">Ongoing</template>
         <template v-else="gameItem.game_state ===3">Finish</template>
-        <p>{{gameItem.PlayerCount}}</p>
+        <p>Amount of Players : {{gameItem.players}}</p>
         <!-- <button
           type="button"
           class="list-group-item list-group-item-action"
@@ -76,7 +76,6 @@ function addProp (){
   let count = PlayerCount.length
 
   APIgameReq[0]['players']=count
-  //hejhej
   return count
 }
 addProp()
