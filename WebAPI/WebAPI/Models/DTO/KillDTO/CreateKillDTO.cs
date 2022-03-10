@@ -2,8 +2,6 @@
 {
     public class CreateKillDTO
     {
-
-        public int GameId { get; set; }
         public int KillerId { get; set; }
         public int VictimId { get; set; }
         public string Time_Of_Death { get; set; }

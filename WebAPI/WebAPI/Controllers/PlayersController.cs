@@ -89,7 +89,7 @@ namespace WebAPI.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(
-                "GetPlayer",
+                nameof(GetPlayer),
                 new { id = playerDomain.Id },
                 _mapper.Map<CreatePlayerDTO>(playerDomain));
         }

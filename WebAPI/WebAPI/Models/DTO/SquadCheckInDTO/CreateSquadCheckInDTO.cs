@@ -2,7 +2,6 @@
 {
     public class CreateSquadCheckInDTO
     {
-        public int GameId { get; set; }
         public int SquadId { get; set; }
         public int SquadmemberId { get; set; }
         public string Start_Time { get; set; }
