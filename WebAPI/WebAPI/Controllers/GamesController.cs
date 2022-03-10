@@ -43,7 +43,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Gets a game based on Id
+        /// Gets a Game based on Id
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -78,7 +78,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Gets a specific player in a game based on Game Id and Player Id
+        /// Gets a specific Player in a Game based on Game Id and Player Id
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -102,9 +102,8 @@ namespace WebAPI.Controllers
             return _mapper.Map<ReadPlayerDTO>(chosen_player);
         }
 
-
         /// <summary>
-        /// Gets all Kills in a game based on Game Id
+        /// Gets all Kills in a Game based on Game Id
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -133,7 +132,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Gets a specific kill in a game based on Game Id and Kill Id
+        /// Gets a specific Kill in a Game based on Game Id and Kill Id
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -158,7 +157,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Gets all Missions in a game based on Game Id
+        /// Gets all Missions in a Game based on Game Id
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -174,9 +173,8 @@ namespace WebAPI.Controllers
             return _mapper.Map<List<ReadMissionDTO>>(game.Missions.ToList());
         }
 
-
         /// <summary>
-        /// Gets a specific Mission in a game based on Game Id and Mission Id
+        /// Gets a specific Mission in a Game based on Game Id and Mission Id
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -201,7 +199,7 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Gets all Squads in a game based on Game Id
+        /// Gets all Squads in a Game based on Game Id
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -217,9 +215,8 @@ namespace WebAPI.Controllers
             return _mapper.Map<List<ReadSquadDTO>>(game.Squads.ToList());
         }
 
-
         /// <summary>
-        /// Gets a specific Squad in a game based on Game Id and Squad Id
+        /// Gets a specific Squad in a Game based on Game Id and Squad Id
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -243,10 +240,8 @@ namespace WebAPI.Controllers
             return _mapper.Map<ReadSquadDTO>(chosen_squad);
         }
 
-
-
         /// <summary>
-        /// Gets all Chats in a game based on Game Id
+        /// Gets all Chats in a Game based on Game Id
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -262,9 +257,8 @@ namespace WebAPI.Controllers
             return _mapper.Map<List<ReadChatDTO>>(game.GameChats.ToList());
         }
 
-
         /// <summary>
-        /// Gets a specific Squad in a game based on Game Id and Chat Id
+        /// Gets a specific Chat in a Game based on Game Id and Chat Id
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -289,11 +283,129 @@ namespace WebAPI.Controllers
         }
 
 
+        /// <summary>
+        /// Creates a new Game
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("game")]
+        public async Task<ActionResult<Game>> PostGame(CreateGameDTO dtoGame)
+        {
+
+            Game gameDomain = _mapper.Map<Game>(dtoGame);
+            _context.Games.Add(gameDomain);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+                nameof(GamesController.GetGame),
+                new { gameid = gameDomain.Id },
+                _mapper.Map<CreateGameDTO>(gameDomain));
+        }
+
+        /// <summary>
+        /// Creates a new Player in specific Game
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("game/{gameid}/player")]
+        public async Task<ActionResult<Player>> PostPlayer(CreatePlayerDTO dtoPlayer, int gameid)
+        {
+
+            Player playerDomain = _mapper.Map<Player>(dtoPlayer);
+            playerDomain.GameId = gameid;
+            _context.Players.Add(playerDomain);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+               "GetPlayerInGame",
+                new { gameid = playerDomain.GameId, playerid = playerDomain.Id },
+                _mapper.Map<CreatePlayerDTO>(playerDomain));
+        }
+        /// <summary>
+        /// Creates a new Kill in specific Game
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("game/{gameid}/kill")]
+        public async Task<ActionResult<Kill>> PostKill(CreateKillDTO dtoKill, int gameid)
+        {
+
+            Kill killDomain = _mapper.Map<Kill>(dtoKill);
+            killDomain.GameId = gameid;
+            _context.Kills.Add(killDomain);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+               "GetKillInGame",
+                new { gameid = killDomain.GameId, killid = killDomain.Id },
+                _mapper.Map<CreateKillDTO>(killDomain));
+        }
+
+
+        /// <summary>
+        /// Creates a new Mission in specific Game
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("game/{gameid}/mission")]
+        public async Task<ActionResult<Mission>> PostKill(CreateMissionDTO dtoMission, int gameid)
+        {
+
+            Mission missionDomain = _mapper.Map<Mission>(dtoMission);
+            missionDomain.GameId = gameid;
+            _context.Missions.Add(missionDomain);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+               "GetMissionInGame",
+                new { gameid = missionDomain.GameId, missionid = missionDomain.Id },
+                _mapper.Map<CreateMissionDTO>(missionDomain));
+        }
+
+        /// <summary>
+        /// Creates a new Squad in specific Game
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("game/{gameid}/squad")]
+        public async Task<ActionResult<Squad>> PostSquad(CreateSquadDTO dtoSquad, int gameid)
+        {
+
+            Squad missionDomain = _mapper.Map<Squad>(dtoSquad);
+            missionDomain.GameID = gameid;
+            _context.Squads.Add(missionDomain);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+               "GetSquadInGame",
+                new { gameid = missionDomain.GameID, squadid = missionDomain.Id },
+                _mapper.Map<CreateSquadDTO>(missionDomain));
+        }
+
+        /// <summary>
+        /// Creates a new Chat in specific Game
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("game/{gameid}/chat")]
+        public async Task<ActionResult<Chat>> PostChat(CreateChatDTO dtoChat, int gameid)
+        {
+
+            Chat chatDomain = _mapper.Map<Chat>(dtoChat);
+            chatDomain.GameId = gameid;
+            _context.Chats.Add(chatDomain);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+               "GetChatInGame",
+                new { gameid = chatDomain.GameId, chatid = chatDomain.Id },
+                _mapper.Map<CreateChatDTO>(chatDomain));
+        }
+
 
         /// <summary>
         /// Update a Game based on Id
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut]
         [Route("game/{gameid}")]
@@ -321,126 +433,6 @@ namespace WebAPI.Controllers
             }
 
             return NoContent();
-        }
-
-        /// <summary>
-        /// Creates a new game
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("game")]
-        public async Task<ActionResult<Game>> PostGame(CreateGameDTO dtoGame)
-        {
-
-            Game gameDomain = _mapper.Map<Game>(dtoGame);
-            _context.Games.Add(gameDomain);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(
-                nameof(GamesController.GetGame),
-                new { gameid = gameDomain.Id },
-                _mapper.Map<CreateGameDTO>(gameDomain));
-        }
-
-
-        /// <summary>
-        /// Creates a new player in specific game
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("game/{gameid}/player")]
-        public async Task<ActionResult<Player>> PostPlayer(CreatePlayerDTO dtoPlayer, int gameid)
-        {
-
-            Player playerDomain = _mapper.Map<Player>(dtoPlayer);
-            playerDomain.GameId = gameid;
-            _context.Players.Add(playerDomain);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(
-               "GetPlayerInGame",
-                new { gameid = playerDomain.GameId, playerid = playerDomain.Id },
-                _mapper.Map<CreatePlayerDTO>(playerDomain));
-        }
-        /// <summary>
-        /// Creates a new kill in specific game
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("game/{gameid}/kill")]
-        public async Task<ActionResult<Kill>> PostKill(CreateKillDTO dtoKill, int gameid)
-        {
-
-            Kill killDomain = _mapper.Map<Kill>(dtoKill);
-            killDomain.GameId = gameid;
-            _context.Kills.Add(killDomain);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(
-               "GetKillInGame",
-                new { gameid = killDomain.GameId, killid = killDomain.Id },
-                _mapper.Map<CreateKillDTO>(killDomain));
-        }
-
-
-        /// <summary>
-        /// Creates a new mission in specific game
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("game/{gameid}/mission")]
-        public async Task<ActionResult<Mission>> PostKill(CreateMissionDTO dtoMission, int gameid)
-        {
-
-            Mission missionDomain = _mapper.Map<Mission>(dtoMission);
-            missionDomain.GameId = gameid;
-            _context.Missions.Add(missionDomain);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(
-               "GetMissionInGame",
-                new { gameid = missionDomain.GameId, missionid = missionDomain.Id },
-                _mapper.Map<CreateMissionDTO>(missionDomain));
-        }
-
-        /// <summary>
-        /// Creates a new squad in specific game
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("game/{gameid}/squad")]
-        public async Task<ActionResult<Squad>> PostSquad(CreateSquadDTO dtoSquad, int gameid)
-        {
-
-            Squad missionDomain = _mapper.Map<Squad>(dtoSquad);
-            missionDomain.GameID = gameid;
-            _context.Squads.Add(missionDomain);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(
-               "GetSquadInGame",
-                new { gameid = missionDomain.GameID, squadid = missionDomain.Id },
-                _mapper.Map<CreateSquadDTO>(missionDomain));
-        }
-
-        /// <summary>
-        /// Creates a new squad in specific game
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("game/{gameid}/chat")]
-        public async Task<ActionResult<Squad>> PostChat(CreateChatDTO dtoChat, int gameid)
-        {
-
-            Chat chatDomain = _mapper.Map<Chat>(dtoChat);
-            chatDomain.GameId = gameid;
-            _context.Chats.Add(chatDomain);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(
-               "GetChatInGame",
-                new { gameid = chatDomain.GameId, chatid = chatDomain.Id },
-                _mapper.Map<CreateChatDTO>(chatDomain));
         }
 
 
