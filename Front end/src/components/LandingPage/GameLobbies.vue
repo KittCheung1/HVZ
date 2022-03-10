@@ -9,6 +9,7 @@
 
         <template v-else-if="gameItem.game_state ===2">Ongoing</template>
         <template v-else="gameItem.game_state ===3">Finish</template>
+        <p>Amount of Players : {{gameItem.players}}</p>
         <!-- <button
           type="button"
           class="list-group-item list-group-item-action"
@@ -52,8 +53,33 @@ let APIgameReq =
     }
   ]
 
+  let PlayerCount =
+  [
+  {
+    "id": 1,
+    "userId": 1,
+    "gameId": 1,
+    "is_Human": 1,
+    "is_Patient_Zero": 0,
+    "bite_Code": "JagBetDig434"  },
+  {
+    "id": 2,
+    "userId": 2,
+    "gameId": 1,
+    "is_Human": 0,
+    "is_Patient_Zero": 1,
+    "bite_Code": "JagBetDig123"  }
+]
 
+function addProp (){
+  
+  let count = PlayerCount.length
 
+  APIgameReq[0]['players']=count
+  return count
+}
+addProp()
+console.log(APIgameReq)
 </script>
 
 <style>
