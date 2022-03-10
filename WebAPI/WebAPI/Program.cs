@@ -25,6 +25,9 @@ builder.Services.AddDbContext<HvZContext>( options =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
+//Detta mirakulöst gör så att docker funkar med databasen på azure
+string ManagedNetworkingAppContextSwitch = "Switch.Microsoft.Data.SqlClient.UseManagedNetworkingOnWindows";
+AppContext.SetSwitch(ManagedNetworkingAppContextSwitch, true);
 
 
 var app = builder.Build();
