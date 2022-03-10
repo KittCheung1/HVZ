@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI.Data;
 
@@ -11,9 +12,10 @@ using WebAPI.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(HvZContext))]
-    partial class HvZContextModelSnapshot : ModelSnapshot
+    [Migration("20220308130011_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -412,9 +414,6 @@ namespace WebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("Is_Admin")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Last_Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -428,7 +427,6 @@ namespace WebAPI.Migrations
                         {
                             Id = 1,
                             First_Name = "Martin",
-                            Is_Admin = true,
                             Last_Name = "Späck"
                         },
                         new

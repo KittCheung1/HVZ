@@ -13,7 +13,7 @@ using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -100,8 +100,8 @@ namespace WebAPI.Controllers
 
             return CreatedAtAction(
                 "GetUser",
-                new { id = userDomain.Id },
-                _mapper.Map<CreateUserDTO>(dtoUser));
+                new { Id = userDomain.Id },
+                _mapper.Map<CreateUserDTO>(userDomain));
         }
 
         /// <summary>
