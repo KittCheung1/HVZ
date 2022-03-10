@@ -403,6 +403,46 @@ namespace WebAPI.Controllers
                 _mapper.Map<CreateMissionDTO>(missionDomain));
         }
 
+        /// <summary>
+        /// Creates a new squad in specific game
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("game/{gameid}/squad")]
+        public async Task<ActionResult<Squad>> PostSquad(CreateSquadDTO dtoSquad, int gameid)
+        {
+
+            Squad missionDomain = _mapper.Map<Squad>(dtoSquad);
+            missionDomain.GameID = gameid;
+            _context.Squads.Add(missionDomain);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+               "GetSquadInGame",
+                new { gameid = missionDomain.GameID, squadid = missionDomain.Id },
+                _mapper.Map<CreateSquadDTO>(missionDomain));
+        }
+
+        /// <summary>
+        /// Creates a new squad in specific game
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("game/{gameid}/chat")]
+        public async Task<ActionResult<Squad>> PostChat(CreateChatDTO dtoChat, int gameid)
+        {
+
+            Chat chatDomain = _mapper.Map<Chat>(dtoChat);
+            chatDomain.GameId = gameid;
+            _context.Chats.Add(chatDomain);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+               "GetChatInGame",
+                new { gameid = chatDomain.GameId, chatid = chatDomain.Id },
+                _mapper.Map<CreateChatDTO>(chatDomain));
+        }
+
 
         /// <summary>
         /// Deletes a game based on the id
