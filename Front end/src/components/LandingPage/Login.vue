@@ -1,4 +1,11 @@
 <script setup>
+import { useRouter } from "vue-router";
+const router = useRouter()
+
+function onclick(){
+
+    router.push("game")
+}
 
 </script>
 
@@ -36,6 +43,7 @@
                     <button type="button" class="btn btn-primary m-3">Login</button>
                     <button type="button" class="btn btn-primary m-3">Register</button>
                 </div>
+                <button type="button" @click="onclick()" class="btn btn-secondary m-3"> Game Page</button>
                 </div>
             </div>
         </div>
