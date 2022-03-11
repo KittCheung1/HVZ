@@ -1,6 +1,17 @@
 <script
 ></script>
 
-<template></template>
+<template>
+<h1>Admin page</h1>
 
-<style></style>
+<div>
+    <router-link class='nav-link' to='/'>home</router-link>
+</div>
+</template>
+
+<style>
+.nav-link{
+    text-decoration: none;
+    color: inherit;
+}
+</style>
