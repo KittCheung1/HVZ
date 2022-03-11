@@ -2,7 +2,6 @@
 {
     public class EditChatDTO
     {
-        public int GameId { get; set; }
         public int PlayerId { get; set; }
         public int SquadId { get; set; }
         public string Message { get; set; }

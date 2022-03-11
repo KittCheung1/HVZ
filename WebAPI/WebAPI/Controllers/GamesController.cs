@@ -435,6 +435,199 @@ namespace WebAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Update a Player in a Game based on gameId and playerId
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("game/{gameid}/player/{playerid}")]
+        public async Task<IActionResult> PutPlayer(int gameid,int playerid, EditPlayerDTO dtoPlayer)
+        {
+
+            Player domainPlayer = _mapper.Map<Player>(dtoPlayer);
+            domainPlayer.GameId = gameid;
+            domainPlayer.Id = playerid;
+
+            _context.Entry(domainPlayer).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GameExists(gameid))
+                {
+                    return NotFound();
+                } else if(!PlayerExists(playerid)) 
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Update a Mission in a Game based on gameId and missionId
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("game/{gameid}/mission/{missionid}")]
+        public async Task<IActionResult> PutMission(int gameid, int missionid, EditMissionDTO dtoMission)
+        {
+
+            Mission domainMission = _mapper.Map<Mission>(dtoMission);
+            domainMission.GameId = gameid;
+            domainMission.Id = missionid;
+
+            _context.Entry(domainMission).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GameExists(gameid))
+                {
+                    return NotFound();
+                }
+                else if (!MissionExists(missionid))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Update a Kill in a Game based on gameId and killId
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("game/{gameid}/kill/{killid}")]
+        public async Task<IActionResult> PutKill(int gameid, int killid, EditKillDTO dtoKill)
+        {
+
+            Kill domainKill = _mapper.Map<Kill>(dtoKill);
+            domainKill.GameId = gameid;
+            domainKill.Id = killid;
+
+            _context.Entry(domainKill).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GameExists(gameid))
+                {
+                    return NotFound();
+                }
+                else if (!KillExists(killid))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Update a Chat in a Game based on gameId and chatId
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("game/{gameid}/chat/{chatid}")]
+        public async Task<IActionResult> PutChat(int gameid, int chatid, EditChatDTO dtoChat)
+        {
+
+            Chat domainChat = _mapper.Map<Chat>(dtoChat);
+            domainChat.GameId = gameid;
+            domainChat.Id = chatid;
+
+            _context.Entry(domainChat).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GameExists(gameid))
+                {
+                    return NotFound();
+                }
+                else if (!ChatExists(chatid))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Update a Squad in a Game based on gameId and squadId
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("game/{gameid}/squad/{squadid}")]
+        public async Task<IActionResult> PutSquad(int gameid, int squadid, EditSquadDTO dtoSquad)
+        {
+
+            Squad domainSquad = _mapper.Map<Squad>(dtoSquad);
+            domainSquad.GameID = gameid;
+            domainSquad.Id = squadid;
+
+            _context.Entry(domainSquad).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!GameExists(gameid))
+                {
+                    return NotFound();
+                }
+                else if (!SquadExists(squadid))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+
+
+
+
 
         /// <summary>
         /// Deletes a game based on the id
@@ -461,5 +654,32 @@ namespace WebAPI.Controllers
         {
             return _context.Games.Any(e => e.Id == gameid);
         }
+
+        private bool PlayerExists(int playerid)
+        {
+            return _context.Players.Any(e => e.Id == playerid);
+        }
+
+        private bool MissionExists(int missionid)
+        {
+            return _context.Missions.Any(e => e.Id == missionid);
+        }
+
+        private bool KillExists(int killid)
+        {
+            return _context.Kills.Any(e => e.Id == killid);
+        }
+
+        private bool ChatExists(int chatid)
+        {
+            return _context.Chats.Any(e => e.Id == chatid);
+        }
+
+        private bool SquadExists(int squadid)
+        {
+            return _context.Chats.Any(e => e.Id == squadid);
+        }
+
+
     }
 }
