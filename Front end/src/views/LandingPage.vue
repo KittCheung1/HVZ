@@ -1,5 +1,4 @@
 <script setup>
-import Lobby from "../components/LandingPage/Lobby.vue";
 import Login from "../components/LandingPage/Login.vue";
 import GameLobbies from "../components/LandingPage/GameLobbies.vue";
 

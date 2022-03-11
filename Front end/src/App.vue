@@ -5,6 +5,7 @@ import LandingPage from './views/LandingPage.vue'
 </script>
 
 <template>
+{{ $store.state.title }}
   <LandingPage />
 </template>
 

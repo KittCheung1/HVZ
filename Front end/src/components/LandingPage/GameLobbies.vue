@@ -8,7 +8,7 @@
         <template v-if="gameItem.game_state === 1">Starting soon</template>
 
         <template v-else-if="gameItem.game_state ===2">Ongoing</template>
-        <template v-else="gameItem.game_state ===3">Finish</template>
+        <template v-else-if="gameItem.game_state ===3">Finish</template>
         <p>Amount of Players : {{gameItem.players}}</p>
         <!-- <button
           type="button"
@@ -22,6 +22,23 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
+
+const getGames = async function () {
+   await fetch('http://hvzapi.northeurope.azurecontainer.io/game')
+      .then((response) => response.json())
+      .then((result) =>
+      {console.log(result) }
+      ) 
+      
+      .catch((e) => {
+         console.log(e);
+      });
+};
+
+onMounted(() => {
+   getGames();
+});
 let APIgameReq =
   [
     {
