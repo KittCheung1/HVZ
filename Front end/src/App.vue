@@ -3,7 +3,7 @@
 
 <template>
   {{ $store.state.title }}
-<router-view></router-view>
+  <router-view />
 </template>
 
 <style>
