@@ -81,38 +81,6 @@ const activeComponent = ref('1')
                             @click="activeComponent = '6'"
                         />
                         <label class="btn btn-outline-primary" for="btnradio6">Chat</label>
-
-                    <!-- <button
-                        @click="activeComponent = '1'"
-                        type="radio"
-                        class="btn btn-outline-primary active"
-                        aria-pressed="true"
-                    >Map</button>
-                    <button
-                        @click="activeComponent = '2'"
-                        type="radio"
-                        class="btn btn-outline-primary"
-                    >Squad</button>
-                    <button
-                        @click="activeComponent = '3'"
-                        type="radio"
-                        class="btn btn-outline-primary"
-                    >Mission</button>
-                    <button
-                        @click="activeComponent = '4'"
-                        type="button"
-                        class="btn btn-outline-primary"
-                    >Bite List</button>
-                    <button
-                        @click="activeComponent = '5'"
-                        type="button"
-                        class="btn btn-outline-primary"
-                    >Players List</button>
-                    <button
-                        @click="activeComponent = '6'"
-                        type="button"
-                        class="btn btn-outline-primary"
-                    >Chat</button> -->
                 </div>
             </div>
         </div>
@@ -131,7 +99,6 @@ const activeComponent = ref('1')
 
 
 <style>
-.active {
-}
+
 </style>
 

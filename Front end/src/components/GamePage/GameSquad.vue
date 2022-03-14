@@ -1,26 +1,7 @@
 <script setup>
+import {useStore} from 'vuex'
 
-let Squads =
-    [
-        {
-            'id': 1,
-            'name': 'Squid-Squad',
-            'players': 1,
-            'nw_lat': null,
-            'nw_lng': null,
-            'se_lat': null,
-            'se_lng': null
-        },
-        {
-            'id': 2,
-            'name': 'Squash-Squad',
-            'players': 2,
-            'nw_lat': null,
-            'nw_lng': null,
-            'se_lat': null,
-            'se_lng': null
-        }
-    ]
+const store = useStore()
 
 </script>
 

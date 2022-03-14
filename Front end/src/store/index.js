@@ -45,6 +45,12 @@ const store = createStore({
             axios(URL+'game/').then(response => {
                 commit('setAllGames', response.data)
             })
+        },
+		getAllPlayers({ commit }, {id}){
+            axios.get(URL+'game/'+ id + '/player').then(response => {
+                commit('setAllPlayers', response.data)
+				console.log(store.getters.getAllPlayers)
+            })
         }
 	}
 })

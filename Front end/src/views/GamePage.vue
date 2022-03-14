@@ -1,5 +1,6 @@
 <script setup>
 import GameDashboard from "../components/GamePage/GameDashboard.vue";
+
 </script>
 
 
