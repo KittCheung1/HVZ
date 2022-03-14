@@ -21,6 +21,12 @@ c.IncludeXmlComments(xmlPath);
 builder.Services.AddDbContext<HvZContext>( options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsApi", builder => builder.WithOrigins("http://localhost:3000", "")
+     .AllowAnyHeader()
+     .AllowAnyMethod());
+});
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -42,6 +48,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("CorsApi");
 
 app.UseAuthorization();
 

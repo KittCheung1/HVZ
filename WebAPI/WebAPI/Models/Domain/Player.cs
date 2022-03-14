@@ -13,6 +13,7 @@ namespace WebAPI.Models
         public int GameId { get; set; }
         public bool Is_Human { get; set; }
         public bool Is_Patient_Zero { get; set; }
+        [MaxLength(20)]
         public string Bite_Code { get; set; }
         public ICollection<Kill> Kills { get; set; }
         public ICollection<Kill> Deaths { get; set; }
