@@ -1,8 +1,10 @@
-﻿namespace WebAPI.DTO.GameDTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebAPI.DTO.GameDTO
 {
     public class CreateGameDTO
     {
-
+        [MaxLength(40)]
         public string Name { get; set; }
 
         public int Game_state { get; set; }

@@ -13,6 +13,7 @@ namespace WebAPI.Models
         public Player Victim { get; set; }
         public int VictimId { get; set; }
         public string Time_Of_Death { get; set; }
+        [MaxLength(80)]
         public string? Story { get; set; }
         public double? Lat { get; set; }
         public double? Lng { get; set; }

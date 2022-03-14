@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI.Data;
 
@@ -11,9 +12,10 @@ using WebAPI.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(HvZContext))]
-    partial class HvZContextModelSnapshot : ModelSnapshot
+    [Migration("20220314073620_fix_null")]
+    partial class fix_null
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,6 +55,7 @@ namespace WebAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("SquadId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -467,7 +470,8 @@ namespace WebAPI.Migrations
                     b.HasOne("WebAPI.Models.Domain.Squad", "Squad")
                         .WithMany("SquadChats")
                         .HasForeignKey("SquadId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Game");
 

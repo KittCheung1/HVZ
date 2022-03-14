@@ -7,6 +7,7 @@ namespace WebAPI.Models
     {
         [Key]
         public int Id { get; set; }
+        [MaxLength(40)]
         public string Name { get; set; }
         public int Game_state { get; set; }
         public double? Nw_lat { get; set; }
