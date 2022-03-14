@@ -1,4 +1,7 @@
 import { createStore } from 'vuex'
+import axios from 'axios'
+
+let URL = 'http://apitest.northeurope.azurecontainer.io/'
 
 const store = createStore({
 	state:{
@@ -27,7 +30,7 @@ const store = createStore({
 	},
 	mutations:{
 		setCurrentGame (state, payload) {state.selectedGame = payload},
-		setAllGames (state, payload) {state.allGames = payload},
+		setAllGames (state, payload) { state.allGames = payload },
 		setSelectedPlayer (state, payload) {state.selectedPlayer = payload},
 		setAllPlayers (state, payload) {state.allPlayers = payload},
 		setSelectedMission (state, payload) {state.selectedMission = payload},
@@ -38,7 +41,11 @@ const store = createStore({
 		setAllSquad (state, payload) {state.selectedSquad = payload}
 	},
 	actions:{
-
+        getAllGames({ commit }){
+            axios(URL+'game/').then(response => {
+                commit('setAllGames', response.data)
+            })
+        }
 	}
 })
 
