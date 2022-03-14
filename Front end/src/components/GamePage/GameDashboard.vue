@@ -5,6 +5,7 @@ import GameBiteList from "./GameBiteList.vue";
 import GameChat from "./GameChat.vue";
 import {ref} from 'vue'
 
+let visibleMap = ref(false)
 let visibleSquad = ref(false)
 let visibleMission = ref(false)
 </script>
@@ -17,7 +18,6 @@ let visibleMission = ref(false)
 
                 <div class="btn-group-vertical w-50 m-4 " role="group" data-toggle="buttons">
                     
-                    <label class="btn btn-outline-primary" for="btnradio1">Map</label>
                     <input
                         type="radio"
                         class="btn-check"
@@ -26,6 +26,7 @@ let visibleMission = ref(false)
                         autocomplete="off"
                         checked
                     />
+                    <label class="btn btn-outline-primary" @click="visibleMap = !visibleMap" for="btnradio1">Map</label>
                         <input
                         type="radio"
                         class="btn-check"
