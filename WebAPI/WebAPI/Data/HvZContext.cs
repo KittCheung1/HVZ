@@ -218,18 +218,6 @@ namespace WebAPI.Data
              .OnDelete(DeleteBehavior.NoAction);
 
 
-            //modelBuilder.Entity<Movie>()
-            //    .HasMany(p => p.Characters)
-            //    .WithMany(p => p.Movies)
-            //    .UsingEntity(j => j.HasData(
-            //    new { CharactersId = 1, MoviesId = 1 },
-            //    new { CharactersId = 1, MoviesId = 2 },
-            //    new { CharactersId = 2, MoviesId = 1 },
-            //    new { CharactersId = 3, MoviesId = 2 },
-            //    new { CharactersId = 4, MoviesId = 3 },
-            //    new { CharactersId = 4, MoviesId = 4 },
-            //    new { CharactersId = 4, MoviesId = 5 }
-            //    ));
         }
 
 

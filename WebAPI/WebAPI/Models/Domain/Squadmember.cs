@@ -12,6 +12,7 @@ namespace WebAPI.Models.Domain
         public int SquadId { get; set; }
         public Player Player { get; set; }
         public int PlayerId { get; set; }
+        [MaxLength(20)]
         public string Rank { get; set; }
         public ICollection<SquadCheckIn> SquadCheckIns { get; set; }
     }

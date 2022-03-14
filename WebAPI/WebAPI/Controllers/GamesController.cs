@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ using WebAPI.Models.DTO.Squad;
 
 namespace WebAPI.Controllers
 {
+    [EnableCors("CorsApi")]
     [ApiController]
     public class GamesController : ControllerBase
     {
@@ -321,6 +323,7 @@ namespace WebAPI.Controllers
                 new { gameid = playerDomain.GameId, playerid = playerDomain.Id },
                 _mapper.Map<CreatePlayerDTO>(playerDomain));
         }
+
         /// <summary>
         /// Creates a new Kill in specific Game
         /// </summary>
@@ -340,7 +343,6 @@ namespace WebAPI.Controllers
                 new { gameid = killDomain.GameId, killid = killDomain.Id },
                 _mapper.Map<CreateKillDTO>(killDomain));
         }
-
 
         /// <summary>
         /// Creates a new Mission in specific Game
@@ -402,7 +404,6 @@ namespace WebAPI.Controllers
                 _mapper.Map<CreateChatDTO>(chatDomain));
         }
 
-
         /// <summary>
         /// Update a Game based on Id
         /// </summary>
@@ -411,11 +412,9 @@ namespace WebAPI.Controllers
         [Route("game/{gameid}")]
         public async Task<IActionResult> PutGame(int gameid, EditGameDTO dtoGame)
         {
-
             Game domainGame = _mapper.Map<Game>(dtoGame);
             domainGame.Id = gameid;
             _context.Entry(domainGame).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -431,7 +430,6 @@ namespace WebAPI.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
@@ -447,9 +445,7 @@ namespace WebAPI.Controllers
             Player domainPlayer = _mapper.Map<Player>(dtoPlayer);
             domainPlayer.GameId = gameid;
             domainPlayer.Id = playerid;
-
             _context.Entry(domainPlayer).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -468,7 +464,6 @@ namespace WebAPI.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
@@ -484,9 +479,7 @@ namespace WebAPI.Controllers
             Mission domainMission = _mapper.Map<Mission>(dtoMission);
             domainMission.GameId = gameid;
             domainMission.Id = missionid;
-
             _context.Entry(domainMission).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -506,7 +499,6 @@ namespace WebAPI.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
@@ -518,13 +510,10 @@ namespace WebAPI.Controllers
         [Route("game/{gameid}/kill/{killid}")]
         public async Task<IActionResult> PutKill(int gameid, int killid, EditKillDTO dtoKill)
         {
-
             Kill domainKill = _mapper.Map<Kill>(dtoKill);
             domainKill.GameId = gameid;
             domainKill.Id = killid;
-
             _context.Entry(domainKill).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -544,7 +533,6 @@ namespace WebAPI.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
@@ -556,13 +544,10 @@ namespace WebAPI.Controllers
         [Route("game/{gameid}/chat/{chatid}")]
         public async Task<IActionResult> PutChat(int gameid, int chatid, EditChatDTO dtoChat)
         {
-
             Chat domainChat = _mapper.Map<Chat>(dtoChat);
             domainChat.GameId = gameid;
             domainChat.Id = chatid;
-
             _context.Entry(domainChat).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -582,7 +567,6 @@ namespace WebAPI.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
@@ -594,13 +578,10 @@ namespace WebAPI.Controllers
         [Route("game/{gameid}/squad/{squadid}")]
         public async Task<IActionResult> PutSquad(int gameid, int squadid, EditSquadDTO dtoSquad)
         {
-
             Squad domainSquad = _mapper.Map<Squad>(dtoSquad);
             domainSquad.GameID = gameid;
             domainSquad.Id = squadid;
-
             _context.Entry(domainSquad).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -620,19 +601,12 @@ namespace WebAPI.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
-
-
-
-
-
 
         /// <summary>
         /// Deletes a game based on the id
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete]
         [Route("game/{gameid}")]
@@ -647,6 +621,121 @@ namespace WebAPI.Controllers
             _context.Games.Remove(game);
             await _context.SaveChangesAsync();
 
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Deletes a player based on the gameid and playerid
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("game/{gameid}/player/{playerid}")]
+        public async Task<IActionResult> DeletePlayer(int gameid,int playerid)
+        {
+            var player = await _context.Players.FindAsync(playerid);
+            var game = await _context.Games.FindAsync(gameid);
+            if (game == null)
+            {
+                return NotFound();
+            }
+            if (player == null)
+            {
+                return NotFound();
+            }
+            _context.Players.Remove(player);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Deletes a mission based on the gameid and missionid
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("game/{gameid}/mission/{missionid}")]
+        public async Task<IActionResult> DeleteMission(int gameid, int missionid)
+        {
+            var game = await _context.Games.FindAsync(gameid);
+            var mission = await _context.Missions.FindAsync(missionid);
+            if (game == null)
+            {
+                return NotFound();
+            }
+            if (mission == null)
+            {
+                return NotFound();
+            }
+            _context.Missions.Remove(mission);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Deletes a chat based on the gameid and missionid
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("game/{gameid}/chat/{chatid}")]
+        public async Task<IActionResult> DeleteGlobalChat(int gameid, int chatid)
+        {
+            var game = await _context.Games.FindAsync(gameid);
+            var chat = await _context.Chats.FindAsync(chatid);
+            if (game == null)
+            {
+                return NotFound();
+            }
+            if (chat == null)
+            {
+                return NotFound();
+            }
+            _context.Chats.Remove(chat);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Deletes a kill based on the gameid and killid
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("game/{gameid}/kill/{killid}")]
+        public async Task<IActionResult> DeleteKill(int gameid, int killid)
+        {
+            var game = await _context.Games.FindAsync(gameid);
+            var kill = await _context.Kills.FindAsync(killid);
+            if (game == null)
+            {
+                return NotFound();
+            }
+            if (kill == null)
+            {
+                return NotFound();
+            }
+            _context.Kills.Remove(kill);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Deletes a squad based on the gameid and squadid
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("game/{gameid}/squad/{squadid}")]
+        public async Task<IActionResult> DeleteSquad(int gameid, int squadid)
+        {
+            var game = await _context.Games.FindAsync(gameid);
+            var squad = await _context.Squads.FindAsync(squadid);
+            if (game == null)
+            {
+                return NotFound();
+            }
+            if (squad == null)
+            {
+                return NotFound();
+            }
+            _context.Squads.Remove(squad);
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
