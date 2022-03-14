@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li
-      v-for='gameItem in APIgameReq'
+      v-for='gameItem in $store.getters.getAllGames '
       :key='gameItem'
     >
       <div class='list-group w-75 p-3 border'>
@@ -34,21 +34,13 @@
 
 <script setup>
 import { onMounted } from 'vue'
-
-const getGames = async function () {
-	await fetch('http://hvzapi.northeurope.azurecontainer.io/game')
-		.then((response) => response.json())
-		.then((result) =>
-		{console.log(result) }
-		) 
-		.catch((e) => {
-			console.log(e)
-		})
-}
-
+import { useStore } from 'vuex'
+const store = useStore()
 onMounted(() => {
-	getGames()
+	store.dispatch('getAllGames').then(
+	console.log(store.getters.getAllGames))
 })
+
 let APIgameReq =
   [
   	{
@@ -106,7 +98,6 @@ function addProp (){
 	return count
 }
 addProp()
-console.log(APIgameReq)
 </script>
 
 <style>

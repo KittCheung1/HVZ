@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LandingPage from '../views/LandingPage.vue'
 import GamePage from '../views/GamePage.vue'
-import Administrator from '../views/Administrator.vue'
+import AdminPage from '../views/AdminPage.vue'
 
 export default createRouter({
 	history: createWebHistory(),
@@ -19,7 +19,7 @@ export default createRouter({
 		{
 			path: '/admin',
 			name: 'admin',
-			component: Administrator,
+			component: AdminPage,
 		},
 	],
 })
