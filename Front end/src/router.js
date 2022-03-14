@@ -9,6 +9,11 @@ const routes = [{
         name: "LandingPage"
     },
     {
+        path: "/landingpage/:game",
+        component: LandingPage,
+        name: "Game"
+    },
+    {
         path: "/game",
         component: GamePage,
         name: "GamePage"

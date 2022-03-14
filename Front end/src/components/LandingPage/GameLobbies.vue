@@ -9,6 +9,7 @@
 
         <template v-else-if="gameItem.game_state ===2">Ongoing</template>
         <template v-else="gameItem.game_state ===3">Finish</template>
+        <p>Route:{{this.$route.params.game}}</p>
         <!-- <button
           type="button"
           class="list-group-item list-group-item-action"
@@ -21,6 +22,10 @@
 </template>
 
 <script setup>
+
+import { useRouter } from "vue-router";
+const router = useRouter()
+
 let APIgameReq =
   [
     {
@@ -51,8 +56,9 @@ let APIgameReq =
       "se_lng": null
     }
   ]
-
-
+// function onClick(){
+// router.push()
+// }
 
 </script>
 
