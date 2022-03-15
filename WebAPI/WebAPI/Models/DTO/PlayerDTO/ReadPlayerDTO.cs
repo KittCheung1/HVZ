@@ -4,6 +4,7 @@ namespace WebAPI.DTO.PlayerDTO
 {
     public class ReadPlayerDTO
     {
+        public string Alias { get; set; }
         public int Id { get; set; }
         public int userId { get; set; }
         public int gameId { get; set; }

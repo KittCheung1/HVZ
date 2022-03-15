@@ -50,6 +50,7 @@ namespace WebAPI.Data
                     Last_Name = "Larsson",
                 });
 
+
             modelBuilder.Entity<Game>()
                 .HasData(new Game
                 {
@@ -62,17 +63,18 @@ namespace WebAPI.Data
                 .HasData(new Player
                 {
                     Id = 1,
+                    Alias = "Kenta kofot",
                     UserId = 1,
                     GameId = 1,
                     Is_Human = true,
                     Is_Patient_Zero = false,
                     Bite_Code = "JagBetDig434"
                 });
-
             modelBuilder.Entity<Player>()
                 .HasData(new Player
                 {
                     Id = 2,
+                    Alias = "SlayerKiller69",
                     UserId = 2,
                     GameId = 1,
                     Is_Human = false,
@@ -90,6 +92,7 @@ namespace WebAPI.Data
                     Time_Of_Death = "10:33"
                 });
 
+
             modelBuilder.Entity<Kill>()
                 .HasOne(k => k.Killer)
                 .WithMany(k => k.Kills)
@@ -100,7 +103,14 @@ namespace WebAPI.Data
                .HasOne(k => k.Victim)
                .WithMany(k => k.Deaths)
                .HasForeignKey(k => k.VictimId)
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Kill>()
+               .HasOne(k => k.Game)
+               .WithMany(k => k.Kills)
+               .HasForeignKey(k => k.GameId)
+               .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Squad>()
                 .HasData(new Squad
@@ -129,13 +139,12 @@ namespace WebAPI.Data
                 .HasForeignKey(k => k.GameId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-
             modelBuilder.Entity<Chat>()
                 .HasData(new Chat
                 {
                     Id = 1,
                     GameId = 1,
-                     PlayerId = 2,
+                    PlayerId = 2,
                     SquadId = 1,
                     Message = "Im the best, u scrubz",
                     Is_Human_Global = true,
@@ -154,21 +163,21 @@ namespace WebAPI.Data
                     Description = "Shop energy drinks at coop",
                 });
 
-           modelBuilder.Entity<Squadmember>()
-               .HasData(new Squadmember
-               {
+            modelBuilder.Entity<Squadmember>()
+                .HasData(new Squadmember
+                {
                     Id = 1,
                     GameId = 1,
                     PlayerId = 2,
                     SquadId = 1,
                     Rank = "Generals"
-               });
+                });
 
-           modelBuilder.Entity<Squadmember>()
-               .HasOne(k => k.Player)
-               .WithMany(k => k.Squadmembers)
-               .HasForeignKey(k => k.PlayerId)
-               .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Squadmember>()
+                .HasOne(k => k.Player)
+                .WithMany(k => k.Squadmembers)
+                .HasForeignKey(k => k.PlayerId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Squadmember>()
                 .HasOne(k => k.Squad)
@@ -212,6 +221,7 @@ namespace WebAPI.Data
                 .WithMany(k => k.SquadCheckIns)
                 .HasForeignKey(k => k.GameId)
                 .OnDelete(DeleteBehavior.NoAction);
+
         }
 
 
