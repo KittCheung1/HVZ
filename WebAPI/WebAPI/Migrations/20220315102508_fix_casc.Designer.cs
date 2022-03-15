@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI.Data;
 
@@ -11,9 +12,10 @@ using WebAPI.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(HvZContext))]
-    partial class HvZContextModelSnapshot : ModelSnapshot
+    [Migration("20220315102508_fix_casc")]
+    partial class fix_casc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -363,10 +365,6 @@ namespace WebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Alias")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Bite_Code")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -396,7 +394,6 @@ namespace WebAPI.Migrations
                         new
                         {
                             Id = 1,
-                            Alias = "Kenta kofot",
                             Bite_Code = "JagBetDig434",
                             GameId = 1,
                             Is_Human = true,
@@ -406,7 +403,6 @@ namespace WebAPI.Migrations
                         new
                         {
                             Id = 2,
-                            Alias = "SlayerKiller69",
                             Bite_Code = "JagBetDig123",
                             GameId = 1,
                             Is_Human = false,
@@ -563,13 +559,13 @@ namespace WebAPI.Migrations
                     b.HasOne("WebAPI.Models.Game", "Game")
                         .WithMany("Kills")
                         .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebAPI.Models.Player", "Killer")
                         .WithMany("Kills")
                         .HasForeignKey("KillerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("WebAPI.Models.Player", "Victim")

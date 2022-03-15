@@ -5,10 +5,11 @@ namespace WebAPI.DTO.PlayerDTO
 {
     public class EditPlayerDTO
     {
-        public int userId { get; set; }
-        public bool is_Human { get; set; }
-        public bool is_Patient_Zero { get; set; }
+        public string Alias { get; set; }
+        public int UserId { get; set; }
+        public bool Is_Human { get; set; }
+        public bool Is_Patient_Zero { get; set; }
         [MaxLength(20)]
-        public string bite_Code { get; set; }
+        public string Bite_Code { get; set; }
     }
 }

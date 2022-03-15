@@ -96,7 +96,6 @@ namespace WebAPI.Controllers
                     chosen_player = player;
                 }
             }
-
             if (game == null)
             {
                 return NotFound();
@@ -113,9 +112,7 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<List<ReadKillDTO>>> GetKillsInGame(int gameid)
         {
             var game = _context.Games.Include(g => g.Players).ThenInclude(p => p.Kills).FirstOrDefault(p => p.Id == gameid);
-
             List<Kill> listOfKills = new List<Kill>();
-
             if (game == null)
             {
                 return NotFound();
@@ -129,7 +126,6 @@ namespace WebAPI.Controllers
                     listOfKills.Add(kill);
                 }
             }
-            
             return _mapper.Map<List<ReadKillDTO>>(listOfKills.ToList());
         }
 
@@ -150,7 +146,6 @@ namespace WebAPI.Controllers
                     chosen_kill = kill;
                 }
             }
-
             if (game == null)
             {
                 return NotFound();
@@ -192,7 +187,6 @@ namespace WebAPI.Controllers
                     chosen_mission = mission;
                 }
             }
-
             if (game == null)
             {
                 return NotFound();
@@ -209,7 +203,6 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<List<ReadSquadDTO>>> GetSquadsInGame(int gameid)
         {
             var game = _context.Games.Include(g => g.Squads).FirstOrDefault(p => p.Id == gameid);
-
             if (game == null)
             {
                 return NotFound();
@@ -251,7 +244,6 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<List<ReadChatDTO>>> GetChatsInGame(int gameid)
         {
             var game = _context.Games.Include(g => g.GameChats).FirstOrDefault(p => p.Id == gameid);
-
             if (game == null)
             {
                 return NotFound();
@@ -276,7 +268,6 @@ namespace WebAPI.Controllers
                     chosen_chat = chat;
                 }
             }
-
             if (game == null)
             {
                 return NotFound();
@@ -293,7 +284,6 @@ namespace WebAPI.Controllers
         [Route("game")]
         public async Task<ActionResult<Game>> PostGame(CreateGameDTO dtoGame)
         {
-
             Game gameDomain = _mapper.Map<Game>(dtoGame);
             _context.Games.Add(gameDomain);
             await _context.SaveChangesAsync();
@@ -312,7 +302,6 @@ namespace WebAPI.Controllers
         [Route("game/{gameid}/player")]
         public async Task<ActionResult<Player>> PostPlayer(CreatePlayerDTO dtoPlayer, int gameid)
         {
-
             Player playerDomain = _mapper.Map<Player>(dtoPlayer);
             playerDomain.GameId = gameid;
             _context.Players.Add(playerDomain);
@@ -332,7 +321,6 @@ namespace WebAPI.Controllers
         [Route("game/{gameid}/kill")]
         public async Task<ActionResult<Kill>> PostKill(CreateKillDTO dtoKill, int gameid)
         {
-
             Kill killDomain = _mapper.Map<Kill>(dtoKill);
             killDomain.GameId = gameid;
             _context.Kills.Add(killDomain);
@@ -352,7 +340,6 @@ namespace WebAPI.Controllers
         [Route("game/{gameid}/mission")]
         public async Task<ActionResult<Mission>> PostKill(CreateMissionDTO dtoMission, int gameid)
         {
-
             Mission missionDomain = _mapper.Map<Mission>(dtoMission);
             missionDomain.GameId = gameid;
             _context.Missions.Add(missionDomain);
@@ -372,7 +359,6 @@ namespace WebAPI.Controllers
         [Route("game/{gameid}/squad")]
         public async Task<ActionResult<Squad>> PostSquad(CreateSquadDTO dtoSquad, int gameid)
         {
-
             Squad missionDomain = _mapper.Map<Squad>(dtoSquad);
             missionDomain.GameID = gameid;
             _context.Squads.Add(missionDomain);
@@ -392,7 +378,6 @@ namespace WebAPI.Controllers
         [Route("game/{gameid}/chat")]
         public async Task<ActionResult<Chat>> PostChat(CreateChatDTO dtoChat, int gameid)
         {
-
             Chat chatDomain = _mapper.Map<Chat>(dtoChat);
             chatDomain.GameId = gameid;
             _context.Chats.Add(chatDomain);
