@@ -63,7 +63,7 @@ namespace WebAPI.Migrations
 
                     b.HasIndex("SquadId");
 
-                    b.ToTable("Chats");
+                    b.ToTable("Chats", (string)null);
 
                     b.HasData(
                         new
@@ -115,7 +115,7 @@ namespace WebAPI.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("Missions");
+                    b.ToTable("Missions", (string)null);
 
                     b.HasData(
                         new
@@ -152,7 +152,7 @@ namespace WebAPI.Migrations
 
                     b.HasIndex("GameID");
 
-                    b.ToTable("Squads");
+                    b.ToTable("Squads", (string)null);
 
                     b.HasData(
                         new
@@ -203,7 +203,7 @@ namespace WebAPI.Migrations
 
                     b.HasIndex("SquadmemberId");
 
-                    b.ToTable("SquadCheckIns");
+                    b.ToTable("SquadCheckIns", (string)null);
 
                     b.HasData(
                         new
@@ -249,7 +249,7 @@ namespace WebAPI.Migrations
 
                     b.HasIndex("SquadId");
 
-                    b.ToTable("SquadMembers");
+                    b.ToTable("SquadMembers", (string)null);
 
                     b.HasData(
                         new
@@ -292,7 +292,7 @@ namespace WebAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Games");
+                    b.ToTable("Games", (string)null);
 
                     b.HasData(
                         new
@@ -342,7 +342,7 @@ namespace WebAPI.Migrations
 
                     b.HasIndex("VictimId");
 
-                    b.ToTable("Kills");
+                    b.ToTable("Kills", (string)null);
 
                     b.HasData(
                         new
@@ -386,7 +386,7 @@ namespace WebAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Players");
+                    b.ToTable("Players", (string)null);
 
                     b.HasData(
                         new
@@ -432,7 +432,7 @@ namespace WebAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new
