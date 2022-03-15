@@ -5,7 +5,7 @@ import GameDashboard from "../components/GamePage/GameDashboard.vue";
 
 
 <template>
-  <h1>Game Page</h1>
+  <h1>Game Page {{id}}</h1>
 
   <div class="m-5">
     <GameDashboard />

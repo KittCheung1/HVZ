@@ -6,8 +6,14 @@ import GameChat from "./GameChat.vue";
 import GamePlayersList from "./GamePlayersList.vue"
 import GameMap from "./GameMap.vue"
 import { ref } from 'vue'
+import { RouterLink } from "vue-router";
 
 const activeComponent = ref('1')
+
+function Test(){
+activeComponent.value = 5
+
+}
 </script>
 
 
@@ -70,6 +76,7 @@ const activeComponent = ref('1')
                             autocomplete="off"
                              @click="activeComponent = '5'"
                         />
+                        <router-link :to="`/game/${activeComponent}playerlist`"></router-link>
                         <label class="btn btn-outline-primary" for="btnradio5">Player List</label>
 
                         <input
