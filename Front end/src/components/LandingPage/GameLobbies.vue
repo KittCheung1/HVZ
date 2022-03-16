@@ -11,16 +11,30 @@
         </button>
         <p>{{ gameItem.name }}</p>
         <template v-if='gameItem.game_state === 1'>
-          Starting soon
+          Waiting for more players
+          <button @click='joinGame(gameItem.id)'>
+            Join Game
+          </button>
         </template>
 
         <template v-else-if='gameItem.game_state ===2'>
           Ongoing
+          <!-- Denna knapp skall bort sen -->
+          <button @click='joinGame(gameItem.id)'>
+            Join Game
+          </button>
+          <!--  -->
         </template>
         <template v-else-if='gameItem.game_state ===3'>
-          Finish
+          <!-- Denna knapp skall bort sen -->
+          <button @click='joinGame(gameItem.id)'>
+            Join Game
+          </button>
+          <!--  -->
+          Finished
         </template>
-        <p>Amount of Players : {{ gameItem.players }}</p>
+       
+
         <!-- <button
           type="button"
           class="list-group-item list-group-item-action"
@@ -34,71 +48,45 @@
 
 <script setup>
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 const store = useStore()
+const route = useRouter()
 onMounted(() => {
 	store.dispatch('getAllGames').then(
-	console.log(store.getters.getAllGames))
+		console.log(store.getters.getAllGames))
 })
 
-let APIgameReq =
-  [
-  	{
-  		'id': 1,
-  		'name': 'Norrköpings zombie spel',
-  		'game_state': 1,
-  		'nw_lat': null,
-  		'nw_lng': null,
-  		'se_lat': null,
-  		'se_lng': null
-  	},
-  	{
-  		'id': 2,
-  		'name': 'Norrköpings zombie spel 2',
-  		'game_state': 2,
-  		'nw_lat': null,
-  		'nw_lng': null,
-  		'se_lat': null,
-  		'se_lng': null
-  	},
-  	{
-  		'id': 3,
-  		'name': 'Norrköpings zombie spel 3',
-  		'game_state': 3,
-  		'nw_lat': null,
-  		'nw_lng': null,
-  		'se_lat': null,
-  		'se_lng': null
-  	}
-  ]
 
-let PlayerCount =
-  [
-  	{
-  		'id': 1,
-  		'userId': 1,
-  		'gameId': 1,
-  		'is_Human': 1,
-  		'is_Patient_Zero': 0,
-  		'bite_Code': 'JagBetDig434'  },
-  	{
-  		'id': 2,
-  		'userId': 2,
-  		'gameId': 1,
-  		'is_Human': 0,
-  		'is_Patient_Zero': 1,
-  		'bite_Code': 'JagBetDig123'  }
-  ]
+function joinGame (gameid){
+	store.dispatch('getGame',{gameId:gameid})
 
-function addProp (){
-  
-	let count = PlayerCount.length
-
-	APIgameReq[0]['players']=count
-	return count
+	//LOGIK FÖR ATT KOLLA IFALL EN PLAYER REDAN FINNS I GAMET ELLER EJ HÄR. NEDANSTÅENDE POST ÄR EJ KLAR
+	//store.dispatch('postPlayer') 
+	route.push('/game')
 }
-addProp()
+
+
+function createPlayer(game){
+
+	let player = {
+		gameid: game,
+		userid: store.getters.getCurrentUserId,
+	 	is_human:1,
+	 	is_patient_zero:0,
+	 	bite_code:'1223sasa'
+	}
+
+	
+}
+
+
+
 </script>
 
-<style>
+<style scoped>
+
+ul{
+    list-style-type: none;
+}
 </style>
