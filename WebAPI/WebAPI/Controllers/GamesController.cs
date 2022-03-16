@@ -350,7 +350,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("game/{gameid}/mission")]
-        public async Task<ActionResult<Mission>> PostKill(CreateMissionDTO dtoMission, int gameid)
+        public async Task<ActionResult<Mission>> PostMission(CreateMissionDTO dtoMission, int gameid)
         {
 
             Mission missionDomain = _mapper.Map<Mission>(dtoMission);
