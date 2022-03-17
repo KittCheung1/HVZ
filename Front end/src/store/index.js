@@ -112,7 +112,7 @@ const store = createStore({
 				})
 				.catch((error) => {
 					if( error.response ){
-						console.log(error.response.data) // => the response payload 
+						console.log(error.response.data) 
 					}
 				})
 		},
@@ -126,7 +126,7 @@ const store = createStore({
 				})
 				.catch((error) => {
 					if( error.response ){
-						console.log(error.response.data) // => the response payload 
+						console.log(error.response.data) 
 					}
 				})
 		},
