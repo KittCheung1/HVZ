@@ -17,6 +17,7 @@ using WebAPI.Models.DTO.ChatDTO;
 using WebAPI.Models.DTO.KillDTO;
 using WebAPI.Models.DTO.MissionDTO;
 using WebAPI.Models.DTO.Squad;
+using WebAPI.Models.DTO.SquadmemberDTO;
 
 namespace WebAPI.Controllers
 {
@@ -240,6 +241,69 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
             return _mapper.Map<ReadSquadDTO>(chosen_squad);
+        }
+
+        /// <summary>
+        /// Gets all Squadmembers in a Squad based on Game Id and Squad Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("game/{gameid}/squad/{squadid}/squadmember")]
+        public async Task<ActionResult<List<ReadSquadmemberDTO>>> GetSquadmembersInSquad(int gameid,int squadid)
+        {
+            var game = _context.Games.Include(g => g.Squads).ThenInclude(s =>s.Squadmembers).FirstOrDefault(p => p.Id == gameid);
+            List<Squadmember> chosen_squadmember = new List<Squadmember>();
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+            if(game.Squads == null)
+            {
+                return NotFound();
+            }
+            if (game.Squadmembers == null)
+            {
+                return NotFound();
+            }
+            foreach (Squadmember squadmember in game.Squadmembers)
+            {
+                if (squadmember.SquadId == squadid)
+                {
+                    chosen_squadmember.Add(squadmember);
+                }
+            }
+
+            return _mapper.Map<List<ReadSquadmemberDTO>>(chosen_squadmember);
+        }
+
+        /// <summary>
+        /// Gets all Squads in a Game based on Game Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("game/{gameid}/squad/{squadid}/squadmember/{squadmemberid}")]
+        public async Task<ActionResult<ReadSquadmemberDTO>> GetSquadmemberInSquad(int gameid, int squadid, int squadmemberid)
+        {
+            var game = _context.Games.Include(g => g.Squads).ThenInclude(s => s.Squadmembers).FirstOrDefault(p => p.Id == gameid);
+            Squadmember chosen_squadmember = new Squadmember();
+
+            if (game == null || game.Squads == null || game.Squadmembers == null)
+            {
+                return NotFound();
+            }
+   
+            foreach (Squadmember squadmember in game.Squadmembers)
+            {
+                if (squadmember.SquadId == squadid)
+                {
+                    if(squadmember.Id == squadmemberid) { 
+                    chosen_squadmember = squadmember;
+                    }
+                }
+            }
+
+            return _mapper.Map<ReadSquadmemberDTO>(chosen_squadmember);
         }
 
         /// <summary>
