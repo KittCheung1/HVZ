@@ -1,12 +1,13 @@
 <script setup>
-import LoginPage from '../components/LandingPage/LoginPage.vue'
-import GameLobbies from '../components/LandingPage/GameLobbies.vue'
+import LoginForm from '../components/LoginForm.vue'
+import GameLobbies from '../components/GameLobbies.vue'
+import { GAME_ROUTE, ADMIN_ROUTE } from '../router'
 </script>
 
 <template>
   <div class='row mt-5 d-flex justify-content-center'>
     <div class='LobbyDiv col-md-6'>
-      <LoginPage />
+      <LoginForm />
     </div>
     <div class='LoginDiv col-md-6'>
       <GameLobbies />
@@ -14,13 +15,13 @@ import GameLobbies from '../components/LandingPage/GameLobbies.vue'
     <div>
       <router-link
         class='nav-link'
-        to='/game'
+        :to='{ name: GAME_ROUTE }'
       >
-        Game page
+        Gamepage
       </router-link>
       <router-link
         class='nav-link'
-        to='/admin'
+        :to='{ name: ADMIN_ROUTE }'
       >
         Admin page
       </router-link>

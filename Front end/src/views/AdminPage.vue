@@ -1,4 +1,6 @@
-<script></script>
+<script setup>
+import { HOME_ROUTE } from '../router'
+</script>
 
 <template>
   <h1>Admin page</h1>
@@ -6,9 +8,9 @@
   <div>
     <router-link
       class='nav-link'
-      to='/'
+      :to='{ name: HOME_ROUTE }'
     >
-      home
+      Home
     </router-link>
   </div>
 </template>
