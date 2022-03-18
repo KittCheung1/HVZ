@@ -17,7 +17,7 @@ onMounted(() => {
             <fieldset class="border-2 border-solid border-slate-500">
                 <div class="m-2">
                     <label for="gameName" class="block p-3">Game List:</label>
-                    <select v-model="selectedGame" id="selectCat">
+                    <select v-model="selectedGame" id="selectGame">
                         <option
                             v-for="game in $store.getters.getAllGames"
                             :key="game"
@@ -46,9 +46,9 @@ onMounted(() => {
                         cols="33"
                     ></textarea>
                 </div>
-                <div class="m-2 coordinates">
-                    <label for="NwLat" class="block p-3">Type:</label>
-                    <select v-model="ishuman">
+                <div class="m-2">
+                    <label for="Nw_Lat" class="block p-3">Type:</label>
+                    <select v-model="is_human">
                         <option disabled value>Please select one</option>
                         <option :value="true">Human</option>
                         <option :value="false">Zombie</option>

@@ -1,31 +1,45 @@
 <script setup>
+import { onMounted } from 'vue'
+import { useStore } from 'vuex'
+const store = useStore()
+onMounted(() => {
+    store.dispatch('getAllKills')
+    store.dispatch('getAllGames').then(
+        console.log(store.getters.getAllGames))
+})
 </script>
 
 <template>
-      <div class="border m-2">
+    <div class="border m-2">
         <h3 class="d-flex justify-content-center m-3">Edit a Kill</h3>
         <form class>
             <fieldset class="border-2 border-solid border-slate-500">
                 <div class="m-2">
+                    <label for="gameName" class="block p-3">Game List:</label>
+                    <select v-model="selectedGame" id="selectGame">
+                        <option
+                            v-for="game in $store.getters.getAllGames"
+                            :key="game"
+                        >{{ game.name }}</option>
+                    </select>
+                </div>
+                <div class="m-2">
                     <label for="killerId" class="block p-3">Killer Id:</label>
-                    <input
-                        id="killerId"
-                        v-model="killerId"
-                        type="text"
-                        placeholder="Killer id"
-                        class="border border-slate-800 input"
-                        
-                    />
+                    <select v-model="selectedKiller" id="killerId">
+                        <option
+                            v-for="killer in $store.getters.getAllKillerIds"
+                            :key="killer"
+                        >{{ killer.id }}</option>
+                    </select>
                 </div>
                 <div class="m-2">
                     <label for="victimId" class="block p-3">Victim Id:</label>
-                    <input
-                        id="victimId"
-                        v-model="victimId"
-                        type="text"
-                        placeholder="victimId"
-                        class="border border-slate-800 input"
-                    />
+                    <select v-model="selectedVictim" id="victimId">
+                        <option
+                            v-for="victim in $store.getters.getAllVictimIds"
+                            :key="victim"
+                        >{{ victim.id }}</option>
+                    </select>
                 </div>
                 <div class="m-2">
                     <label for="tod" class="block p-3">Time of Death:</label>
@@ -55,7 +69,7 @@
                         v-model="Lat"
                         type="text"
                         placeholder="Lat"
-                        class="border border-slate-800 m-2 input "
+                        class="border border-slate-800 m-2 input"
                     />
                     <input
                         id="Lng"
@@ -72,7 +86,7 @@
 </template>
 
 <style scoped>
-.input{
+.input {
     width: 70px;
 }
 </style>

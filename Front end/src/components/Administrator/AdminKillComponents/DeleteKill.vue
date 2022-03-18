@@ -4,8 +4,8 @@ import { onMounted } from 'vue'
 import { useStore } from 'vuex'
 const store = useStore()
 onMounted(() => {
-	store.dispatch('getAllGames').then(
-	console.log(store.getters.getAllGames))
+	store.dispatch('getAllKills').then(
+	console.log(store.getters.getAllKills))
 })
 
 function deleteKill(){
@@ -16,21 +16,21 @@ alert("Deleted kill")
 
 <template>
     <div class="border m-2">
-        <h3 class="d-flex justify-content-center m-3">Delete a Kill</h3>
-        <ul class="m-3 p-3" v-for="gameItem in $store.getters.getAllGames " :key="gameItem">
-                <div class="list-group p-3 border">
-                    <button
-                        class="list-group-item list-group-item-action active"
-                    @click="deleteKill()"
-                    >Delete Game {{ gameItem.id }}</button>
-                    <p>{{ gameItem.name }}</p>
-                    <template v-if="gameItem.game_state === 1">Starting soon</template>
-
-                    <template v-else-if="gameItem.game_state === 2">Ongoing</template>
-                    <template v-else-if="gameItem.game_state === 3">Finish</template>
-                    <p>Amount of Players : {{ gameItem.players }}</p>
+        <h3 class="d-flex justify-content-center m-3">Delete Kill</h3>
+        <form class>
+            <fieldset class="border-2 border-solid border-slate-500">
+                <div class="m-2">
+                    <label for="killName" class="block p-3">Kill List:</label>
+                    <select v-model="selectedKill" id="selectKill">
+                        <option
+                            v-for="kill in $store.getters.getAllKill"
+                            :key="kill"
+                        >{{ kill.name }}</option>
+                    </select>
                 </div>
-        </ul>
+                <button class="m-3" @click="deleteKill()">Delete Kill</button>
+            </fieldset>
+        </form>
     </div>
 </template>
 

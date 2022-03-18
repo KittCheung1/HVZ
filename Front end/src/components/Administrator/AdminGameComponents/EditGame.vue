@@ -1,4 +1,12 @@
 <script setup>
+import { onMounted } from 'vue'
+import { useStore } from 'vuex'
+const store = useStore()
+onMounted(() => {
+    store.dispatch('getAllGames').then(
+        console.log(store.getters.getAllGames))
+})
+
 </script>
 
 <template>
@@ -6,18 +14,17 @@
         <h3 class="d-flex justify-content-center m-3">Edit Game</h3>
         <form class>
             <fieldset class="border-2 border-solid border-slate-500">
-                <div class="m-4">
-                    <label for="gameName" class="block p-3">Game Name:</label>
-                    <input
-                        id="gameName"
-                        v-model="gameName"
-                        type="text"
-                        placeholder="Game Name"
-                        class="border border-slate-800"
-                    />
+                <div class="m-2">
+                    <label for="gameName" class="block p-3">Game List:</label>
+                    <select v-model="selectedGame" id="selectGame">
+                        <option
+                            v-for="game in $store.getters.getAllGames"
+                            :key="game"
+                        >{{ game.name }}</option>
+                    </select>
                 </div>
 
-                <div class="m-4">
+                <div class="m-2">
                     <label for="gameState" class="block p-3">Game State:</label>
                     <input
                         id="gameState"
@@ -27,7 +34,7 @@
                         class="border border-slate-800"
                     />
                 </div>
-                <div class="m-4 coordinates">
+                <div class="m-2 coordinates">
                     <label for="Nw_Lat" class="block p-3">Coordinates:</label>
                     <input
                         id="Nw_Lat"

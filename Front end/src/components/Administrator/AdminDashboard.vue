@@ -4,6 +4,8 @@ import GameCreateEditDelete from './AdminGameComponents/GameCreateEditDelete.vue
 import MissionCreateEditDelete from './AdminMissionComponent/MissionCreateEditDelete.vue';
 import SquadCreateEditDelete from './AdminSquadComponents/SquadCreateEditDelete.vue';
 import KillCreateEditDelete from './AdminKillComponents/KillCreateEditDelete.vue';
+import PlayerCreateEditDelete from './AdminPlayerComponents/PlayerCreateEditDelete.vue';
+import ChatCreateEditDelete from './AdminChatComponenets/ChatCreateEditDelete.vue';
 
 const activeComponent = ref('1')
 
@@ -86,8 +88,8 @@ const activeComponent = ref('1')
             <MissionCreateEditDelete v-if="activeComponent === '2'" />
             <SquadCreateEditDelete v-if="activeComponent === '3'" />
             <KillCreateEditDelete v-if="activeComponent === '4'" />
-            <GamePlayersList v-if="activeComponent === '5'" />
-            <GameChat v-if="activeComponent === '6'" />
+            <PlayerCreateEditDelete v-if="activeComponent === '5'" />
+            <ChatCreateEditDelete v-if="activeComponent === '6'" />
         </div>
     </div>
 </template>

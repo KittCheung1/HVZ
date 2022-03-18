@@ -17,20 +17,20 @@ alert("Deleted game")
 <template>
     <div class="border m-2">
         <h3 class="d-flex justify-content-center m-3">Delete Game</h3>
-        <ul class="m-3 p-3" v-for="gameItem in $store.getters.getAllGames " :key="gameItem">
-                <div class="list-group p-3 border">
-                    <button
-                        class="list-group-item list-group-item-action active"
-                    @click="deleteGame()"
-                    >Delete Game {{ gameItem.id }}</button>
-                    <p>{{ gameItem.name }}</p>
-                    <template v-if="gameItem.game_state === 1">Starting soon</template>
-
-                    <template v-else-if="gameItem.game_state === 2">Ongoing</template>
-                    <template v-else-if="gameItem.game_state === 3">Finish</template>
-                    <p>Amount of Players : {{ gameItem.players }}</p>
+        <form class>
+            <fieldset class="border-2 border-solid border-slate-500">
+                <div class="m-2">
+                    <label for="gameName" class="block p-3">Game List:</label>
+                    <select v-model="selectedGame" id="selectGame">
+                        <option
+                            v-for="game in $store.getters.getAllGames"
+                            :key="game"
+                        >{{ game.name }}</option>
+                    </select>
                 </div>
-        </ul>
+                <button class="m-3" @click="deleteGame()">Delete Game</button>
+            </fieldset>
+        </form>
     </div>
 </template>
 
