@@ -55,11 +55,22 @@ const route = useRouter()
 onMounted(() => {
 	store.dispatch('getAllGames').then(
 		console.log(store.getters.getAllGames))
+	  store.dispatch('makeid', {length: 10})
 })
+
+let player = {
+	userId: store.getters.getCurrentUserId,
+	 	is_Human: true,
+	 	is_Patient_Zero: false ,
+	 	bite_Code: makeid(10)
+}
 
 
 function joinGame (gameid){
 	store.dispatch('getGame',{gameId:gameid})
+		.then(store.dispatch('getAllPlayersAndCheck', {gameId:gameid}))
+
+
 
 	//LOGIK FÖR ATT KOLLA IFALL EN PLAYER REDAN FINNS I GAMET ELLER EJ HÄR. NEDANSTÅENDE POST ÄR EJ KLAR
 	//store.dispatch('postPlayer') 
@@ -67,16 +78,25 @@ function joinGame (gameid){
 }
 
 
+function makeid(length) {
+	var result           = ''
+	var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+	var charactersLength = characters.length
+	for ( var i = 0; i < length; i++ ) {
+		result += characters.charAt(Math.floor(Math.random() * 
+ charactersLength))
+	}
+	return result
+}
+
+
+
+
+
 function createPlayer(game){
 
-	let player = {
-		gameid: game,
-		userid: store.getters.getCurrentUserId,
-	 	is_human:1,
-	 	is_patient_zero:0,
-	 	bite_code:'1223sasa'
-	}
 
+	store.dispatch('postPlayer',player)
 	
 }
 

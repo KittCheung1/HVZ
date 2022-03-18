@@ -6,12 +6,14 @@ import GameChat from './GameChat.vue'
 import GamePlayersList from './GamePlayersList.vue'
 import GameMap from './GameMap.vue'
 import { ref } from 'vue'
+import GameShowBiteCode from './GameShowBiteCode.vue'
 
 const activeComponent = ref('1')
 </script>
 
 
 <template>
+  <GameShowBiteCode />
   <div class='row mt-5 d-flex justify-content-left'>
     <div class='col-md-3'>
       <div class='border border-solid d-flex justify-content-center'>

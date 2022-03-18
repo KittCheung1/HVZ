@@ -262,10 +262,6 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
-            if (game.Squadmembers == null)
-            {
-                return NotFound();
-            }
             foreach (Squadmember squadmember in game.Squadmembers)
             {
                 if (squadmember.SquadId == squadid)
@@ -467,6 +463,30 @@ namespace WebAPI.Controllers
                 new { gameid = chatDomain.GameId, chatid = chatDomain.Id },
                 _mapper.Map<CreateChatDTO>(chatDomain));
         }
+
+        /// <summary>
+        /// Creates a new Squadmember in specific Game and specific squad
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("game/{gameid}/squad/{squadid}/squadmember")]
+        public async Task<ActionResult<Squadmember>> PostSquadmember(CreateSquadmemberDTO dtoChat, int gameid, int squadid)
+        {
+
+            Squadmember squadmemberDomain = _mapper.Map<Squadmember>(dtoChat);
+            squadmemberDomain.GameId = gameid;
+            squadmemberDomain.SquadId = squadid;
+            _context.SquadMembers.Add(squadmemberDomain);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+               "GetSquadmembersInSquad",
+                new { gameid = squadmemberDomain.GameId, squadid = squadmemberDomain.SquadId },
+                _mapper.Map<CreateSquadmemberDTO>(squadmemberDomain));
+        }
+
+
+
 
         /// <summary>
         /// Update a Game based on Id

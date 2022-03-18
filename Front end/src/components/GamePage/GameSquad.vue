@@ -11,13 +11,33 @@ onMounted(()=>{
 
 
 function joinSquad(squadid, IsHuman){
+  	store.commit('setSelectedSquadId',squadid)
+  	console.log('SquadId: '+store.getters.getSelectedSquadId)
 	if(IsHuman){
-		console.log('You have joined a human squad wtih id :'+squadid+', Welcome!')
+		console.log('You: '+store.getters.getCurrentPlayerId+'have joined a human squad wtih id :'+squadid+', Welcome!')
+		
 	} else {
 		console.log('You have joined a zombie squad with id:'+squadid+', Time to hunt!')
 	}
+	let member = {
+		Rank: 'Private',
+		SquadId:squadid
+	}
+
+
+	store.dispatch('PostSquadmemberIfNotFound',member)
 }
 
+
+function showSquadmembers(squadid){
+	hidden.value = !hidden.value
+
+	store.dispatch('getAllSquadmembers',{gameId:store.getters.getCurrentGameId, squadId:squadid})
+
+	
+}
+
+let hidden = ref(false)
 </script>
 
 <template>
@@ -34,18 +54,28 @@ function joinSquad(squadid, IsHuman){
             <div class='Human'>
               <h5>{{ squadItem.name }}</h5>
               <p> Squad Id: {{ squadItem.id }}</p>
-              <button @click='joinSquad(squadItem.id, squadItem.isHuman)'>
-                Join Squad
-              </button>
+              <template v-if='$store.getters.getSelectedPlayer.is_Human'> 
+                <button @click='joinSquad(squadItem.id, squadItem.isHuman)'>
+                  Join Squad
+                </button>
+                <button @click='showSquadmembers(squadItem.id)'>
+                  Console members
+                </button>
+              </template>
             </div>
           </template>
           <template v-else>
             <div class='Zombie'>
               <h5>{{ squadItem.name }}</h5>
               <p> Squad Id: {{ squadItem.id }}</p>
-              <button @click='joinSquad(squadItem.id)'>
-                Join Squad
-              </button>
+              <template v-if='!$store.getters.getSelectedPlayer.is_Human'> 
+                <button @click='joinSquad(squadItem.id, squadItem.isHuman)'>
+                  Join Squad
+                </button>
+                <button @click='showSquadmembers(squadItem.id)'>
+                  Console members
+                </button>
+              </template>
             </div>
           </template>
         </li>
