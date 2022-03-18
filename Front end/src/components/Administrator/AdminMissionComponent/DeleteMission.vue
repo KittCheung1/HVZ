@@ -8,6 +8,10 @@ onMounted(() => {
 	console.log(store.getters.getAllGames))
 })
 
+function deleteMission(){
+alert("Deleted mission")
+}
+
 </script>
 
 <template>
@@ -17,7 +21,8 @@ onMounted(() => {
                 <div class="list-group p-3 border">
                     <button
                         class="list-group-item list-group-item-action active"
-                    >Mission {{ missionItem.id }}</button>
+                        @click="deleteMission()"
+                    >Delete Mission {{ missionItem.id }}</button>
                     <p>{{ missionItem.name }}</p>
                 </div>
         </ul>

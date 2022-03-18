@@ -8,6 +8,10 @@ onMounted(() => {
 	console.log(store.getters.getAllGames))
 })
 
+function deleteGame(){
+alert("Deleted game")
+}
+
 </script>
 
 <template>
@@ -17,7 +21,8 @@ onMounted(() => {
                 <div class="list-group p-3 border">
                     <button
                         class="list-group-item list-group-item-action active"
-                    >Game {{ gameItem.id }}</button>
+                    @click="deleteGame()"
+                    >Delete Game {{ gameItem.id }}</button>
                     <p>{{ gameItem.name }}</p>
                     <template v-if="gameItem.game_state === 1">Starting soon</template>
 
