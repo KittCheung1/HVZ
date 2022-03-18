@@ -1,0 +1,71 @@
+<script setup>
+</script>
+
+<template>
+    <div class="border m-2 ">
+        <h3 class="d-flex justify-content-center m-3">Create Mission</h3>
+        <form class>
+            <fieldset class="border-2 border-solid border-slate-500">
+                <div class="m-4">
+                    <label for="missionName" class="block p-3">Mission name:</label>
+                    <input
+                        id="gamename"
+                        v-model="missionName"
+                        type="text"
+                        placeholder="Mission name"
+                        class="border border-slate-800"
+                    />
+                </div>
+
+                <div class="m-4">
+                    <label for="gamestate" class="block p-3">Game State:</label>
+                    <input
+                        id="gamestate"
+                        v-model="gameState"
+                        type="text"
+                        placeholder="Game State"
+                        class="border border-slate-800"
+                    />
+                </div>
+                <div class="m-4 coordinates">
+                    <label for="NwLat" class="block p-3">Coordinates:</label>
+                    <input
+                        id="Nw_Lat"
+                        v-model="Nw_Lat"
+                        type="text"
+                        placeholder="Nw_Lat"
+                        class="border border-slate-800 m-2 input "
+                    />
+                    <input
+                        id="Nw_Lng"
+                        v-model="Nw_Lng"
+                        type="text"
+                        placeholder="Nw_Lng"
+                        class="border border-slate-800 m-2 input"
+                    />
+                    <input
+                        id="Sw_Lat"
+                        v-model="Sw_Lat"
+                        type="text"
+                        placeholder="Sw_Lat"
+                        class="border border-slate-800 m-2 input"
+                    />
+                    <input
+                        id="Sw_Lng"
+                        v-model="Sw_Lng"
+                        type="text"
+                        placeholder="Sw_Lng"
+                        class="border border-slate-800 m-2 input"
+                    />
+                </div>
+            </fieldset>
+        </form>
+        <button class="m-3">Create</button>
+    </div>
+</template>
+
+<style scoped>
+.input{
+    width: 70px;
+}
+</style>
