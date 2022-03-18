@@ -60,7 +60,7 @@
                 </div>
             </fieldset>
         </form>
-        <button class="m-3 ">Edit</button>
+        <button class="m-3 ">Save Changes</button>
     </div>
 </template>
 

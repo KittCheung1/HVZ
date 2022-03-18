@@ -13,15 +13,14 @@ const activeComponent = ref('1')
             <div class="border border-solid d-flex justify-content-center">
                 <div
                     class="btn-group btn-group-vertical btn-group-toggle w-75 m-4"
-                    aria-label="GameDashboard"
+                    aria-label="AdminDashboard"
                     role="group"
                     data-toggle="buttons"
                 >
-
                         <input
                             type="radio"
                             class="btn-check"
-                            name="btnradio"
+                            name="adminBtnRadio"
                             id="btnradio1"
                             autocomplete="off"
                             @click="activeComponent = '1'"
@@ -32,7 +31,7 @@ const activeComponent = ref('1')
                         <input
                             type="radio"
                             class="btn-check"
-                            name="btnradio"
+                            name="adminBtnRadio"
                             id="btnradio2"
                             autocomplete="off"
                              @click="activeComponent = '2'"
@@ -42,7 +41,7 @@ const activeComponent = ref('1')
                         <input
                             type="radio"
                             class="btn-check"
-                            name="btnradio"
+                            name="adminBtnRadio"
                             id="btnradio3"
                             autocomplete="off"
                             @click="activeComponent = '3'"
@@ -51,7 +50,7 @@ const activeComponent = ref('1')
                         <input
                             type="radio"
                             class="btn-check"
-                            name="btnradio"
+                            name="adminBtnRadio"
                             id="btnradio4"
                             autocomplete="off"
                             @click="activeComponent = '4'"
@@ -61,7 +60,7 @@ const activeComponent = ref('1')
                         <input
                             type="radio"
                             class="btn-check"
-                            name="btnradio"
+                            name="adminBtnRadio"
                             id="btnradio5"
                             autocomplete="off"
                              @click="activeComponent = '5'"
@@ -71,7 +70,7 @@ const activeComponent = ref('1')
                         <input
                             type="radio"
                             class="btn-check"
-                            name="btnradio"
+                            name="adminBtnRadio"
                             id="btnradio6"
                             autocomplete="off"
                             @click="activeComponent = '6'"

@@ -6,7 +6,7 @@
         <h3 class="d-flex justify-content-center m-3">Create Game</h3>
         <form class>
             <fieldset class="border-2 border-solid border-slate-500">
-                <div class="m-4">
+                <div class="m-2">
                     <label for="gameName" class="block p-3">Game Name:</label>
                     <input
                         id="gameName"
@@ -17,7 +17,7 @@
                     />
                 </div>
 
-                <div class="m-4">
+                <div class="m-2">
                     <label for="gameState" class="block p-3">Game State:</label>
                     <input
                         id="gameState"
@@ -27,7 +27,7 @@
                         class="border border-slate-800"
                     />
                 </div>
-                <div class="m-4 coordinates">
+                <div class="m-2 coordinates">
                     <label for="Nw_Lat" class="block p-3">Coordinates:</label>
                     <input
                         id="Nw_Lat"

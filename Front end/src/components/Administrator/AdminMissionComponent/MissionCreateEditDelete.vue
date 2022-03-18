@@ -12,7 +12,7 @@ const activeNavSelect = ref('1')
         <input
             type="radio"
             class="btn-check"
-            name="btnradio"
+            name="missionBtnradio"
             id="btnradioCreate"
             autocomplete="off"
             @click="activeNavSelect = '1'"
@@ -22,7 +22,7 @@ const activeNavSelect = ref('1')
         <input
             type="radio"
             class="btn-check"
-            name="btnradio"
+            name="missionBtnradio"
             id="btnradioEdit"
             autocomplete="off"
             @click="activeNavSelect = '2'"
@@ -31,7 +31,7 @@ const activeNavSelect = ref('1')
         <input
             type="radio"
             class="btn-check"
-            name="btnradio"
+            name="missionBtnradio"
             id="btnradioDelete"
             autocomplete="off"
             @click="activeNavSelect = '3'"
