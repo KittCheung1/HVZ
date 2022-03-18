@@ -16,7 +16,7 @@ onMounted(() => {
         <form class>
             <fieldset class="border-2 border-solid border-slate-500">
                 <div class="m-2">
-                    <label for="missionName" class="block p-3">Game List:</label>
+                    <label for="gameName" class="block p-3">Game List:</label>
                     <select v-model="selectedGame" id="selectCat">
                         <option
                             v-for="game in $store.getters.getAllGames"
@@ -27,7 +27,7 @@ onMounted(() => {
                 <div class="m-2">
                     <label for="missionName" class="block p-3">Mission name:</label>
                     <input
-                        id="gamename"
+                        id="missionName"
                         v-model="missionName"
                         type="text"
                         placeholder="Mission name"
@@ -55,14 +55,14 @@ onMounted(() => {
                     </select>
                 </div>
                 <div class="m-2">
-                    <label for="NwLat" class="block p-3">Start Time:</label>
+                    <label for="startTime" class="block p-3">Start Time:</label>
                     <input
                         id="startTime"
                         v-model="startTime"
                         type="time"
                         class="border border-slate-800 m-2 input"
                     />
-                    <label for="NwLat" class="block p-3">End Time:</label>
+                    <label for="endTime" class="block p-3">End Time:</label>
                     <input
                         id="endTime"
                         v-model="endTime"

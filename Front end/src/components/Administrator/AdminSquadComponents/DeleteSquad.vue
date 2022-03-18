@@ -8,20 +8,20 @@ onMounted(() => {
 	console.log(store.getters.getAllGames))
 })
 
-function deleteMission(){
-alert("Deleted mission")
+function deleteSquad(){
+alert("Deleted squad")
 }
 
 </script>
 
 <template>
     <div class="border m-2">
-        <h3 class="d-flex justify-content-center m-3">Delete Mission</h3>
+        <h3 class="d-flex justify-content-center m-3">Delete Squad</h3>
         <ul class="m-3 p-3" v-for="gameItem in $store.getters.getAllGames " :key="gameItem">
                 <div class="list-group p-3 border">
                     <button
                         class="list-group-item list-group-item-action active"
-                    @click="deleteMission()"
+                    @click="deleteGame()"
                     >Delete Game {{ gameItem.id }}</button>
                     <p>{{ gameItem.name }}</p>
                     <template v-if="gameItem.game_state === 1">Starting soon</template>

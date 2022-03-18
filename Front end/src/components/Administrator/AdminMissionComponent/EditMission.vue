@@ -1,4 +1,14 @@
 <script setup>
+
+
+import { onMounted } from 'vue'
+import { useStore } from 'vuex'
+const store = useStore()
+onMounted(() => {
+    store.dispatch('getAllMissions')
+    store.dispatch('getAllGames').then(
+        console.log(store.getters.getAllGames))
+})
 </script>
 
 <template>
@@ -7,7 +17,7 @@
                 <form class>
             <fieldset class="border-2 border-solid border-slate-500">
                 <div class="m-2">
-                    <label for="missionName" class="block p-3">Game List:</label>
+                    <label for="gameName" class="block p-3">Game List:</label>
                     <select v-model="selectedGame" id="selectGame">
                         <option
                             v-for="game in $store.getters.getAllGames"
@@ -37,7 +47,7 @@
                     ></textarea>
                 </div>
                 <div class="m-2 coordinates">
-                    <label for="NwLat" class="block p-3">Type:</label>
+                    <label for="is_human" class="block p-3">Type:</label>
                     <select v-model="ishuman">
                         <option disabled value>Please select one</option>
                         <option :value="true">Human</option>
@@ -45,14 +55,14 @@
                     </select>
                 </div>
                 <div class="m-2">
-                    <label for="NwLat" class="block p-3">Start Time:</label>
+                    <label for="startTime" class="block p-3">Start Time:</label>
                     <input
                         id="startTime"
                         v-model="startTime"
                         type="time"
                         class="border border-slate-800 m-2 input"
                     />
-                    <label for="NwLat" class="block p-3">End Time:</label>
+                    <label for="endTime" class="block p-3">End Time:</label>
                     <input
                         id="endTime"
                         v-model="endTime"

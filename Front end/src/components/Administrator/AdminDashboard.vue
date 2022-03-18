@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import GameCreateEditDelete from './AdminGameComponents/GameCreateEditDelete.vue'
 import MissionCreateEditDelete from './AdminMissionComponent/MissionCreateEditDelete.vue';
+import SquadCreateEditDelete from './AdminSquadComponents/SquadCreateEditDelete.vue';
+import KillCreateEditDelete from './AdminKillComponents/KillCreateEditDelete.vue';
 
 const activeComponent = ref('1')
 
@@ -55,7 +57,7 @@ const activeComponent = ref('1')
                             autocomplete="off"
                             @click="activeComponent = '4'"
                         />
-                        <label class="btn btn-outline-primary" for="btnradio4">Bite List</label>
+                        <label class="btn btn-outline-primary" for="btnradio4">Kill List</label>
 
                         <input
                             type="radio"
@@ -82,8 +84,8 @@ const activeComponent = ref('1')
         <div class="col-md-9 border">
             <GameCreateEditDelete v-if="activeComponent === '1'" />
             <MissionCreateEditDelete v-if="activeComponent === '2'" />
-            <GameMission v-if="activeComponent === '3'" />
-            <GameBiteList v-if="activeComponent === '4'" />
+            <SquadCreateEditDelete v-if="activeComponent === '3'" />
+            <KillCreateEditDelete v-if="activeComponent === '4'" />
             <GamePlayersList v-if="activeComponent === '5'" />
             <GameChat v-if="activeComponent === '6'" />
         </div>
