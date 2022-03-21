@@ -1,11 +1,10 @@
 <template>
-  <ul>
+  <ul >
     <li
       v-for='gameItem in $store.getters.getAllGames '
       :key='gameItem'
     >
       <div class='list-group w-75 p-3 border'>
-        <!-- <button type="button" class="list-group-item list-group-item-action">Game Lobbies</button> -->
         <button class='list-group-item list-group-item-action active'>
           Game {{ gameItem.id }}
         </button>
