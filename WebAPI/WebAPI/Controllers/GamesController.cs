@@ -17,6 +17,7 @@ using WebAPI.Models.DTO.ChatDTO;
 using WebAPI.Models.DTO.KillDTO;
 using WebAPI.Models.DTO.MissionDTO;
 using WebAPI.Models.DTO.Squad;
+using WebAPI.Models.DTO.SquadmemberDTO;
 
 namespace WebAPI.Controllers
 {
@@ -243,6 +244,65 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
+        /// Gets all Squadmembers in a Squad based on Game Id and Squad Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("game/{gameid}/squad/{squadid}/squadmember")]
+        public async Task<ActionResult<List<ReadSquadmemberDTO>>> GetSquadmembersInSquad(int gameid,int squadid)
+        {
+            var game = _context.Games.Include(g => g.Squads).ThenInclude(s =>s.Squadmembers).FirstOrDefault(p => p.Id == gameid);
+            List<Squadmember> chosen_squadmember = new List<Squadmember>();
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+            if(game.Squads == null)
+            {
+                return NotFound();
+            }
+            foreach (Squadmember squadmember in game.Squadmembers)
+            {
+                if (squadmember.SquadId == squadid)
+                {
+                    chosen_squadmember.Add(squadmember);
+                }
+            }
+
+            return _mapper.Map<List<ReadSquadmemberDTO>>(chosen_squadmember);
+        }
+
+        /// <summary>
+        /// Gets all Squads in a Game based on Game Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("game/{gameid}/squad/{squadid}/squadmember/{squadmemberid}")]
+        public async Task<ActionResult<ReadSquadmemberDTO>> GetSquadmemberInSquad(int gameid, int squadid, int squadmemberid)
+        {
+            var game = _context.Games.Include(g => g.Squads).ThenInclude(s => s.Squadmembers).FirstOrDefault(p => p.Id == gameid);
+            Squadmember chosen_squadmember = new Squadmember();
+
+            if (game == null || game.Squads == null || game.Squadmembers == null)
+            {
+                return NotFound();
+            }
+   
+            foreach (Squadmember squadmember in game.Squadmembers)
+            {
+                if (squadmember.SquadId == squadid)
+                {
+                    if(squadmember.Id == squadmemberid) { 
+                    chosen_squadmember = squadmember;
+                    }
+                }
+            }
+
+            return _mapper.Map<ReadSquadmemberDTO>(chosen_squadmember);
+        }
+
+        /// <summary>
         /// Gets all Chats in a Game based on Game Id
         /// </summary>
         /// <returns></returns>
@@ -350,7 +410,7 @@ namespace WebAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("game/{gameid}/mission")]
-        public async Task<ActionResult<Mission>> PostKill(CreateMissionDTO dtoMission, int gameid)
+        public async Task<ActionResult<Mission>> PostMission(CreateMissionDTO dtoMission, int gameid)
         {
 
             Mission missionDomain = _mapper.Map<Mission>(dtoMission);
@@ -403,6 +463,30 @@ namespace WebAPI.Controllers
                 new { gameid = chatDomain.GameId, chatid = chatDomain.Id },
                 _mapper.Map<CreateChatDTO>(chatDomain));
         }
+
+        /// <summary>
+        /// Creates a new Squadmember in specific Game and specific squad
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("game/{gameid}/squad/{squadid}/squadmember")]
+        public async Task<ActionResult<Squadmember>> PostSquadmember(CreateSquadmemberDTO dtoChat, int gameid, int squadid)
+        {
+
+            Squadmember squadmemberDomain = _mapper.Map<Squadmember>(dtoChat);
+            squadmemberDomain.GameId = gameid;
+            squadmemberDomain.SquadId = squadid;
+            _context.SquadMembers.Add(squadmemberDomain);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(
+               "GetSquadmembersInSquad",
+                new { gameid = squadmemberDomain.GameId, squadid = squadmemberDomain.SquadId },
+                _mapper.Map<CreateSquadmemberDTO>(squadmemberDomain));
+        }
+
+
+
 
         /// <summary>
         /// Update a Game based on Id

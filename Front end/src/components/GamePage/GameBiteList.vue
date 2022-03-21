@@ -1,25 +1,38 @@
 <script setup>
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import store from '../../store'
+
+
+
+onMounted(()=>{
+	store.dispatch('getAllKills',{gameId:store.getters.getCurrentGameId})
+})
+
 </script>
 
 <template>
-    <div class="text-center">
-        <h3>Bite List Info</h3>
-        <div>
-            <h5>Human</h5>
-            <p>Player 1</p>
-            <p>Player 2</p>
-            <p>Player 3</p>
-        </div>
-        <div>
-            <h5>Zombie</h5>
-            <p>Player 1</p>
-            <p>Player 2</p>
-            <p>Player 3</p>
-        </div>
-
+  <div class='text-center'>
+    <h3>List of Kills</h3>
+    <div>
+      <ul>
+        <li
+          v-for='killItem in $store.getters.getAllKills '
+          :key='killItem'
+        >
+          <p>Player: {{ killItem.killerId }} &#128481; Player: {{ killItem.victimId }} at {{ killItem.time_Of_Death }} by "{{ killItem.story }}"</p>
+        </li>
+      </ul>
     </div>
+  </div>
 </template>
 
 
-<style>
+<style scoped>
+ul{
+    list-style-type: none;
+}
+li{
+    border: 2px solid black;
+}
 </style>

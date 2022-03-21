@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using WebAPI.Models.Domain;
 using WebAPI.Models.DTO.Squad;
+using WebAPI.Models.DTO.SquadmemberDTO;
 
 namespace WebAPI.Profiles
 {
@@ -9,11 +10,11 @@ namespace WebAPI.Profiles
         public SquadmemberProfile()
         {
             //Creates maps between two different classes to only show relevant and objective data about each model, one for each DTO
-            CreateMap<Squad, ReadSquadDTO>()
+            CreateMap<Squadmember, ReadSquadmemberDTO>()
                 .ReverseMap();
-            CreateMap<Squad, CreateSquadDTO>()
+            CreateMap<Squadmember, CreateSquadmemberDTO>()
                 .ReverseMap();
-            CreateMap<Squad, EditSquadDTO>()
+            CreateMap<Squadmember, EditSquadmemberDTO>()
                 .ReverseMap();
         }
     }

@@ -23,7 +23,7 @@ builder.Services.AddDbContext<HvZContext>( options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CorsApi", builder => builder.WithOrigins("http://localhost:3000", "")
+    options.AddPolicy("CorsApi", builder => builder.WithOrigins("http://localhost:3000", "http://localhost:3000/game", "http://localhost:3000/admin")
      .AllowAnyHeader()
      .AllowAnyMethod());
 });

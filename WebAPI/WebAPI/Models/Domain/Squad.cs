@@ -11,6 +11,7 @@ namespace WebAPI.Models.Domain
         [MaxLength(40)]
         public string Name { get; set; }
         public bool IsHuman { get; set; }
+
         public ICollection<Chat> SquadChats { get; set; }
         public ICollection<Squadmember> Squadmembers { get; set; }
         public ICollection<SquadCheckIn> SquadCheckIns { get; set; }
