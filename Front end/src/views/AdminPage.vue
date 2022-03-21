@@ -1,16 +1,14 @@
-<script></script>
+<script setup>
+import Navbar from '../components/AdminPage/Navbar.vue'
+</script>
 
 <template>
-  <h1>Admin page</h1>
-
-  <div>
-    <router-link
-      class='nav-link'
-      to='/'
-    >
-      home
-    </router-link>
+<div>
+    <Navbar/>
   </div>
+  <div>
+  </div>
+  
 </template>
 
 <style>
