@@ -71,7 +71,6 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<List<ReadPlayerDTO>>> GetPlayersInGame(int gameid)
         {
             var game = _context.Games.Include(g => g.Players).FirstOrDefault(p => p.Id == gameid);
-
             if (game == null)
             {
                 return NotFound();
@@ -96,7 +95,6 @@ namespace WebAPI.Controllers
                     chosen_player = player;
                 }
             }
-
             if (game == null)
             {
                 return NotFound();
@@ -113,15 +111,12 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<List<ReadKillDTO>>> GetKillsInGame(int gameid)
         {
             var game = _context.Games.Include(g => g.Players).ThenInclude(p => p.Kills).FirstOrDefault(p => p.Id == gameid);
-
             List<Kill> listOfKills = new List<Kill>();
-
             if (game == null)
             {
                 return NotFound();
             }
-
-            //FIX posting to to wrong game if player not included in game
+          
             foreach (Player player in game.Players)
             {
                 foreach (Kill kill in player.Kills)
@@ -129,8 +124,7 @@ namespace WebAPI.Controllers
                     listOfKills.Add(kill);
                 }
             }
-            
-            return _mapper.Map<List<ReadKillDTO>>(listOfKills.ToList());
+                        return _mapper.Map<List<ReadKillDTO>>(listOfKills.ToList());
         }
 
         /// <summary>
@@ -332,7 +326,7 @@ namespace WebAPI.Controllers
         [Route("game/{gameid}/kill")]
         public async Task<ActionResult<Kill>> PostKill(CreateKillDTO dtoKill, int gameid)
         {
-
+            //FIX posting to to wrong game if player not included in game, not sure if fix is needed coz e will see all player id in a game
             Kill killDomain = _mapper.Map<Kill>(dtoKill);
             killDomain.GameId = gameid;
             _context.Kills.Add(killDomain);
