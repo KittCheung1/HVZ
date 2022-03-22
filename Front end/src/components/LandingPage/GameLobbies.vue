@@ -1,5 +1,5 @@
 <template>
-  <ul >
+  <ul>
     <li
       v-for='gameItem in $store.getters.getAllGames '
       :key='gameItem'
@@ -69,8 +69,8 @@ function joinGame (gameid){
 	store.dispatch('getGame',{gameId:gameid})
 		.then(store.dispatch('getAllPlayersAndCheck', {gameId:gameid}))
 
-
-
+	store.dispatch('getAllSquadmembersInGame',{ gameId:gameid})
+	store.dispatch('getAllKills',{gameId:gameid})
 	//LOGIK FÖR ATT KOLLA IFALL EN PLAYER REDAN FINNS I GAMET ELLER EJ HÄR. NEDANSTÅENDE POST ÄR EJ KLAR
 	//store.dispatch('postPlayer') 
 	route.push('/game')

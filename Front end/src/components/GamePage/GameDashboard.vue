@@ -7,13 +7,13 @@ import GamePlayersList from './GamePlayersList.vue'
 import GameMap from './GameMap.vue'
 import { ref } from 'vue'
 import GameShowBiteCode from './GameShowBiteCode.vue'
+import GameLanding from './GameLanding.vue'
 
 const activeComponent = ref('1')
 </script>
 
 
 <template>
-  <GameShowBiteCode />
   <div class='row mt-5 d-flex justify-content-left'>
     <div class='col-md-3'>
       <div class='border border-solid d-flex justify-content-center'>
@@ -35,7 +35,7 @@ const activeComponent = ref('1')
           <label
             class='btn btn-outline-primary'
             for='btnradio1'
-          >Map</label>
+          >Rules</label>
 
           <input
             id='btnradio2'
@@ -48,7 +48,7 @@ const activeComponent = ref('1')
           <label
             class='btn btn-outline-primary'
             for='btnradio2'
-          >Squad</label>
+          >Map</label>
 
           <input
             id='btnradio3'
@@ -61,7 +61,8 @@ const activeComponent = ref('1')
           <label
             class='btn btn-outline-primary'
             for='btnradio3'
-          >Mission</label>
+          >Squad</label>
+
           <input
             id='btnradio4'
             type='radio'
@@ -73,8 +74,7 @@ const activeComponent = ref('1')
           <label
             class='btn btn-outline-primary'
             for='btnradio4'
-          >Bite List</label>
-
+          >Mission</label>
           <input
             id='btnradio5'
             type='radio'
@@ -86,7 +86,7 @@ const activeComponent = ref('1')
           <label
             class='btn btn-outline-primary'
             for='btnradio5'
-          >Player List</label>
+          >Bite List</label>
 
           <input
             id='btnradio6'
@@ -99,49 +99,32 @@ const activeComponent = ref('1')
           <label
             class='btn btn-outline-primary'
             for='btnradio6'
+          >Player List</label>
+
+          <input
+            id='btnradio7'
+            type='radio'
+            class='btn-check'
+            name='btnradio'
+            autocomplete='off'
+            @click='activeComponent = &apos;7&apos;'
+          >
+          <label
+            class='btn btn-outline-primary'
+            for='btnradio7'
           >Chat</label>
 
-          <!-- <button
-                        @click="activeComponent = '1'"
-                        type="radio"
-                        class="btn btn-outline-primary active"
-                        aria-pressed="true"
-                    >Map</button>
-                    <button
-                        @click="activeComponent = '2'"
-                        type="radio"
-                        class="btn btn-outline-primary"
-                    >Squad</button>
-                    <button
-                        @click="activeComponent = '3'"
-                        type="radio"
-                        class="btn btn-outline-primary"
-                    >Mission</button>
-                    <button
-                        @click="activeComponent = '4'"
-                        type="button"
-                        class="btn btn-outline-primary"
-                    >Bite List</button>
-                    <button
-                        @click="activeComponent = '5'"
-                        type="button"
-                        class="btn btn-outline-primary"
-                    >Players List</button>
-                    <button
-                        @click="activeComponent = '6'"
-                        type="button"
-                        class="btn btn-outline-primary"
-                    >Chat</button> -->
         </div>
       </div>
     </div>
     <div class='col-md-9 border'>
-      <GameMap v-if='activeComponent === &apos;1&apos;' />
-      <GameSquad v-if='activeComponent === &apos;2&apos;' />
-      <GameMission v-if='activeComponent === &apos;3&apos;' />
-      <GameBiteList v-if='activeComponent === &apos;4&apos;' />
-      <GamePlayersList v-if='activeComponent === &apos;5&apos;' />
-      <GameChat v-if='activeComponent === &apos;6&apos;' />
+      <GameLanding v-if='activeComponent === &apos;1&apos;' />
+      <GameMap v-if='activeComponent === &apos;2&apos;' />
+      <GameSquad v-if='activeComponent === &apos;3&apos;' />
+      <GameMission v-if='activeComponent === &apos;4&apos;' />
+      <GameBiteList v-if='activeComponent === &apos;5&apos;' />
+      <GamePlayersList v-if='activeComponent === &apos;6&apos;' />
+      <GameChat v-if='activeComponent === &apos;7&apos;' />
     </div>
   </div>
 </template>

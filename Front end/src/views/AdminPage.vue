@@ -1,16 +1,23 @@
 <script setup>
-import AdminDashboard from '../components/Administrator/AdminDashboard.vue';
+import AdminDashboard from '../components/Administrator/AdminDashboard.vue'
 
 </script>
 
 <template>
   <div>
     <div>
-      <h1 class="d-flex justify-content-center">Admin page</h1>
-      <div class="m-5">
+      <h1 class='d-flex justify-content-center'>
+        Admin page
+      </h1>
+      <div class='m-5'>
         <AdminDashboard />
       </div>
-      <router-link class="nav-link" to="/">home</router-link>
+      <router-link
+        class='nav-link'
+        to='/'
+      >
+        home
+      </router-link>
     </div>
   </div>
 </template>
