@@ -262,12 +262,51 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
+            if(game.Squadmembers == null)
+            {
+                return new EmptyResult();
+            }
             foreach (Squadmember squadmember in game.Squadmembers)
             {
                 if (squadmember.SquadId == squadid)
                 {
                     chosen_squadmember.Add(squadmember);
                 }
+            }
+
+            return _mapper.Map<List<ReadSquadmemberDTO>>(chosen_squadmember);
+        }
+
+
+
+        /// <summary>
+        /// Gets all Squadmembers in a Squad based on Game Id and Squad Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("game/{gameid}/allsquadmembers")]
+        public async Task<ActionResult<List<ReadSquadmemberDTO>>> GetSquadmembersInGame(int gameid)
+        {
+            var game = _context.Games.Include(g => g.Squads).ThenInclude(s => s.Squadmembers).FirstOrDefault(p => p.Id == gameid);
+            List<Squadmember> chosen_squadmember = new List<Squadmember>();
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+            if (game.Squads == null)
+            {
+                return NotFound();
+            }
+            if(game.Squadmembers == null)
+            {
+                return new EmptyResult();
+            }
+            foreach (Squadmember squadmember in game.Squadmembers)
+            {
+               
+                    chosen_squadmember.Add(squadmember);
+                
             }
 
             return _mapper.Map<List<ReadSquadmemberDTO>>(chosen_squadmember);
@@ -822,6 +861,37 @@ namespace WebAPI.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
+
+
+        /// <summary>
+        /// Deletes a squad based on the gameid and squadid
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("game/{gameid}/squad/{squadid}/squadmember/{squadmemberid}")]
+        public async Task<IActionResult> DeleteSquadmember(int gameid, int squadid,int squadmemberid)
+        {
+            var game = await _context.Games.FindAsync(gameid);
+            var squad = await _context.Squads.FindAsync(squadid);
+            var squadmember = await _context.SquadMembers.FindAsync(squadmemberid);
+            if (game == null)
+            {
+                return NotFound();
+            }
+            if (squad == null)
+            {
+                return NotFound();
+            }
+            if(squadmember == null)
+            {
+                return NotFound();
+            }
+            _context.SquadMembers.Remove(squadmember);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
 
         private bool GameExists(int gameid)
         {
