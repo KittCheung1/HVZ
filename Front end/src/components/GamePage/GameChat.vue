@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted } from '@vue/runtime-core'
 import store from '../../store'
+import GameSendChat from './GameSendChat.vue'
 
 
 onMounted(()=>{
@@ -15,10 +16,10 @@ function bitePlayer(bitecode) {
 
 <template>
   <div class='text-center'>
-    <h3>List of Chat</h3>
+    <h3>Global Game Chat</h3>
     <div>
       <ul>
-        <p> layouten är :</p>
+        <GameSendChat />
         <p>Time | Player Id| Message</p>
         <li
           v-for='chatItem in $store.getters.getAllChats '
