@@ -40,6 +40,7 @@ function deleteGame(){
         </div>
         <button
           class='m-3'
+          type='button'
           @click='deleteGame()'
         >
           Delete Game

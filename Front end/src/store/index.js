@@ -2,7 +2,7 @@ import { createStore, Store } from 'vuex'
 import axios from 'axios'
 import { reactive } from 'vue'
 
-let URL = 'http://testtest.northeurope.azurecontainer.io/'
+let URL = 'http://fixedapi.westeurope.azurecontainer.io/'
 
 const store = createStore({
 	state:{
@@ -26,7 +26,7 @@ const store = createStore({
 		allSquadmembers: [] 	,
 		selectedSquadmember: {},
 		selectedSquadId: 0,
-
+		selectedGameState: '',
 	},
 	getters:{
 		getSelectedGame: state => state.selectedGame,
@@ -157,6 +157,24 @@ const store = createStore({
 			})
 
 		},
+		postGame({commit}, {Name, GameState, Nw_Lat, Nw_Lng, Se_Lat, Se_Lng}){
+			axios.post(URL+'game/', {
+				Name:Name,
+				Game_state:parseInt(GameState),
+				Nw_Lat:Nw_Lat,
+				Nw_Lng:Nw_Lng,
+				Se_Lat:Se_Lat,
+				Se_Lng:Se_Lng
+			})
+				.then(response => { 
+					console.log(response)
+				})
+				.catch((error) => {
+					if( error.response ){
+						console.log(error.response.data) 
+					}
+				})
+		},
 		postPlayer({commit},{userId,is_Human,is_Patient_Zero,bite_Code}){
 			axios.post(URL+'game/'+store.getters.getCurrentGameId+'/player', {
 				userId: userId, 
@@ -215,23 +233,6 @@ const store = createStore({
 					}
 				})
 		},
-		PutPlayerToZombie({commit},{userId,is_Human,is_Patient_Zero,bite_Code}){
-			axios.put(URL+'game/'+store.getters.getCurrentGameId+'/player/', {
-				userId: userId, 
-				is_Human: false, 
-				is_Patient_Zero: false,
-				bite_Code: bite_Code
-			})
-				.then(response => { 
-					console.log(response)
-				})
-				.catch((error) => {
-					if( error.response ){
-						console.log(error.response.data) 
-					}
-				})
-
-		},
 		postSquadmember({commit},{PlayerId,Rank}){
 			axios.post(URL+'game/'+store.getters.getCurrentGameId+'/squad/'+store.getters.getCurrentSquadId+'/squadmember', {
 				PlayerId:PlayerId,
@@ -274,6 +275,43 @@ const store = createStore({
 				}
 			})
 		},
+		PutGame({commit},{name,game_state,nw_lat,nw_lng,se_lat,se_lng}){
+			axios.put(URL+'game/'+store.getters.getCurrentGameId, {
+				name:name,
+				game_state:game_state,
+				nw_lat:nw_lat,
+				nw_lng:nw_lng,
+				se_lat:se_lat,
+				se_lng:se_lng
+			})
+				.then(response => { 
+					console.log(response)
+				})
+				.catch((error) => {
+					if( error.response ){
+						console.log(error.response.data) 
+					}
+				})
+
+		},
+		PutPlayerToZombie({commit},{userId,is_Human,is_Patient_Zero,bite_Code}){
+			axios.put(URL+'game/'+store.getters.getCurrentGameId+'/player/', {
+				userId: userId, 
+				is_Human: false, 
+				is_Patient_Zero: false,
+				bite_Code: bite_Code
+			})
+				.then(response => { 
+					console.log(response)
+				})
+				.catch((error) => {
+					if( error.response ){
+						console.log(error.response.data) 
+					}
+				})
+
+		},
+
 	}
 })
 
