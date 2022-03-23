@@ -88,6 +88,18 @@ onMounted(() => {
         </div>
         <div class='m-2'>
           <label
+            for='squadName'
+            class='block p-3'
+          >Squad Name:</label>
+          <input
+            id='squadName'
+            v-model='store.getters.getSelectedSquad.name'
+            type='text'
+            class='border border-slate-800'
+          >
+        </div>
+        <div class='m-2'>
+          <label
             for='is_human'
             class='block p-3'
           >Is Human:</label>
