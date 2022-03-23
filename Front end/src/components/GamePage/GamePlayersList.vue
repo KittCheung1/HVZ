@@ -13,19 +13,30 @@ onMounted(()=>{
 
 
 
-function bitePlayer(CorrectCode,CheckCode,HumanId,story) {
+function bitePlayer(CorrectCode,CheckCode,HumanId,story,lat,lng) {
 	console.log(CorrectCode)
 	console.log(HumanId)
 	console.log(store.getters.getCurrentPlayerId)
 	let current = new Date()
 	console.log(current.toLocaleTimeString())
-	let kill = {
+	let fixed_lat = 0.00
+	let fixed_lng = 0.00
+	console.log('this is lat: '+lat)
+  	console.log('this is lat: '+lng)
+	if(lat != undefined){
+		fixed_lat = parseFloat(lat)
+	} 
+  	if(lng != undefined){
+		fixed_lng = parseFloat(lng)
+	} 
+	
+  	let kill = {
   	KillerId:store.getters.getCurrentPlayerId,
 		VictimId:HumanId,
 		Time_Of_Death: current.toLocaleTimeString(),
 		Story:story,
-		Lat:0.00,
-		Lng:0.00
+		Lat:fixed_lat,
+		Lng:fixed_lng
 	}
 
 	let changedPlayer = {
@@ -36,14 +47,14 @@ function bitePlayer(CorrectCode,CheckCode,HumanId,story) {
 	if(CorrectCode === CheckCode){
 		store.dispatch('postKill',kill)
 
-		axios.put('http://fixedapi.westeurope.azurecontainer.io/game/'+store.getters.getCurrentGameId+'/player/'+HumanId, {
+		axios.put('http://hvzapi.northeurope.azurecontainer.io/game/'+store.getters.getCurrentGameId+'/player/'+HumanId, {
 			userId: store.getters.getCurrentUserId, 
 			is_Human: false, 
 			is_Patient_Zero: false,
 			bite_Code: CorrectCode
      
 		})
-		
+		console.log(kill)
 	
 	} else{
 		console.log('Invalid code')
@@ -66,6 +77,8 @@ let hidden = ref(true)
 let bittenCode = reactive({})
 
 let story = reactive({})
+let lat = reactive({})
+let lng = reactive({})
 </script>
 
 <template>
@@ -93,7 +106,14 @@ let story = reactive({})
                 v-model='story[i]'
                 placeholder='Story of kill'
               >
-              <button @click='bitePlayer(playerItem.bite_Code,bittenCode[i], playerItem.id,story[i])'>
+              <input
+              v-model ='lat[i]'
+              placeholder='lat'
+              >
+               <input
+              v-model ='lng[i]'
+              placeholder='lng'>
+              <button @click='bitePlayer(playerItem.bite_Code,bittenCode[i], playerItem.id,story[i],lat[i],lng[i])'>
                 Sumbit Kill
               </button>
             </div>

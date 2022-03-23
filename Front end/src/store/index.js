@@ -2,7 +2,7 @@ import { createStore, Store } from 'vuex'
 import axios from 'axios'
 import { reactive,ref } from 'vue'
 
-let URL = 'http://fixedapi.westeurope.azurecontainer.io/'
+let URL = 'http://hvzapi.northeurope.azurecontainer.io/'
 
 const store = createStore({
 	state:{
@@ -212,6 +212,7 @@ const store = createStore({
 					console.log(response)
 					commit('setCurrentVictimId',response.VictimId)
 					setTimeout(function() { store.dispatch('getAllPlayers',{gameId:store.getters.getCurrentGameId}) }, 100)
+					setTimeout(function() { store.dispatch('getAllKills',{gameId:store.getters.getCurrentGameId}) }, 100)
 					changedUser = {
 						userId: VictimId, 
 						is_Human: false, 
@@ -311,7 +312,7 @@ const store = createStore({
 		deleteSquadmember({commit}, {SquadId,SquadmemberId}){
 			axios.delete(URL+'game/'+store.getters.getCurrentGameId+'/squad/'+SquadId+'/squadmember/'+SquadmemberId)
 			console.log('deleted')
-			setTimeout(function() { store.dispatch('getAllSquadmembersInGame',{gameId:store.getters.getCurrentGameId}) }, 300)
+			setTimeout(function() { store.dispatch('getAllSquadmembersInGame',{gameId:store.getters.getCurrentGameId}) }, 400)
 		},
 	}
 })
