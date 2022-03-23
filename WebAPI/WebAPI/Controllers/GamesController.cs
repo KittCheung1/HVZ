@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using WebAPI.Data;
 using WebAPI.DTO.GameDTO;
 using WebAPI.DTO.PlayerDTO;
@@ -298,10 +299,11 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
-            if(game.Squadmembers == null)
+            if (game.Squadmembers == null)
             {
-                return new EmptyResult();
+                return _mapper.Map<List<ReadSquadmemberDTO>>(chosen_squadmember);
             }
+
             foreach (Squadmember squadmember in game.Squadmembers)
             {
                
@@ -865,7 +867,7 @@ namespace WebAPI.Controllers
 
 
         /// <summary>
-        /// Deletes a squad based on the gameid and squadid
+        /// Deletes a squadmember based on the gameid,squadid and squadmemberid
         /// </summary>
         /// <returns></returns>
         [HttpDelete]
