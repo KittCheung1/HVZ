@@ -1,9 +1,29 @@
 <script setup>
-import { onMounted } from 'vue'
-import { useStore } from 'vuex'
-const store = useStore()
+import {onMounted, reactive, ref } from 'vue'
+import store from '../../../store'
+
+let id = ref(0)
+let squadId = ref(0)
+
+function submitGame(){
+	store.dispatch('getGame', {gameId: id.value})
+	store.dispatch('getAllSquads', {gameId: id.value})
+	store.commit('setCurrentGameId', id.value)
+	console.log(id.value)
+}
+
+function submitSquad(){
+	store.dispatch('getSquad', {gameId:id.value, id:squadId.value })
+	store.commit('setSelectedSquadId', squadId.value)
+	console.log(squadId.value)
+}
+
+function editSquad(){
+	store.dispatch('PutSquad', store.getters.getSelectedSquad)
+	console.log(store.getters.getSelectedSquad)
+}
+
 onMounted(() => {
-	store.dispatch('getAllSquads')
 	store.dispatch('getAllGames').then(
 		console.log(store.getters.getAllGames))
 })
@@ -23,40 +43,55 @@ onMounted(() => {
           >Game List:</label>
           <select
             id='selectGame'
-            v-model='selectedGame'
+            v-model='id'
           >
             <option
-              v-for='game in $store.getters.getAllGames'
+              v-for='game in store.getters.getAllGames'
               :key='game'
+              :value='game.id'
             >
               {{ game.name }}
             </option>
           </select>
+          <button
+            class='m-2'
+            type='button'
+            @click='submitGame()'
+          >
+            Submit
+          </button>
         </div>
-        <div class='m-4'>
+        <div class='m-2'>
           <label
             for='squadName'
             class='block p-3'
-          >Squad Name:</label>
+          >Squad List:</label>
           <select
             id='selectSquad'
-            v-model='selectedSquad'
+            v-model='squadId'
           >
             <option
-              v-for='squad in $store.getters.getAllSquads'
+              v-for='squad in store.getters.getAllSquads'
               :key='squad'
+              :value='squad.id'
             >
               {{ squad.name }}
             </option>
           </select>
+          <button
+            class='m-2'
+            type='button'
+            @click='submitSquad()'
+          >
+            Submit
+          </button>
         </div>
-
-        <div class='m-4'>
+        <div class='m-2'>
           <label
             for='is_human'
             class='block p-3'
-          >Type:</label>
-          <select v-model='is_human'>
+          >Is Human:</label>
+          <select v-model='store.getters.getSelectedSquad.isHuman'>
             <option
               disabled
               value
@@ -64,16 +99,19 @@ onMounted(() => {
               Please select one
             </option>
             <option :value='true'>
-              Human
+              True
             </option>
             <option :value='false'>
-              Zombie
+              False
             </option>
           </select>
         </div>
       </fieldset>
     </form>
-    <button class='m-3'>
+    <button
+      class='m-3'
+      @click='editSquad()'
+    >
       Save Changes
     </button>
   </div>
