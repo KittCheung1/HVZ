@@ -3,7 +3,6 @@ import {onMounted, reactive, ref } from 'vue'
 import store from '../../../store'
 
 let id=ref(0)
-let missionName = ref('')
 let is_Human_Visible = ref(false)
 let is_Zombie_Visible =ref(false)
 let description = ref('')
@@ -27,13 +26,10 @@ function createMission(){
 function submitGame(){
 	store.dispatch('getGame', {gameId: id.value})
 	console.log(id.value)
-	// store.commit('setCurrentGameId', id.value)
 }
 
 onMounted(() => {
 	store.dispatch('getAllGames')
-	// .then(
-	// 	console.log(store.getters.getAllGames))
 })
 
 </script>
