@@ -2,7 +2,7 @@ import { createStore, Store } from 'vuex'
 import axios from 'axios'
 import { reactive } from 'vue'
 
-let URL = 'http://fixedapi.westeurope.azurecontainer.io/'
+let URL = 'http://hvzapi.northeurope.azurecontainer.io/'
 
 const store = createStore({
 	state:{
@@ -19,6 +19,7 @@ const store = createStore({
 		selectedChat: {},
 		allChats: [],
 		currentGameId: 1,
+		currentMissionId: 1,
 		currentUserId: 4,
 		currentPlayerId: 0,
 		currentBiteCode: '',
@@ -41,6 +42,7 @@ const store = createStore({
 		getAllSquads: state => state.allSquads,
 		getAllChats: state => state.allChats,
 		getCurrentGameId: state => state.currentGameId,
+		getCurrentMissionId: state=> state.currentMissionId,
 		getCurrentUserId: state => state.currentUserId,
 		getCurrentPlayerId: state => state.currentPlayerId,
 		getCurrentBiteCode: state => state.currentBiteCode,
@@ -63,6 +65,7 @@ const store = createStore({
 		setAllSquads (state, payload) {state.allSquads = payload},
 		setAllChats (state,payload) {state.allChats = payload},
 		setCurrentGameId (state,payload) {state.currentGameId = payload},
+		setCurrentMissionId (state,payload) {state.currentMissionId = payload},
 		setCurrentUserId (state,payload) {state.currentUserId = payload},
 		setCurrentPlayerId (state,payload) {state.currentPlayerId = payload},
 		setCurrentBiteCode (state,payload) {state.currentBiteCode = payload},
@@ -83,6 +86,14 @@ const store = createStore({
 				commit('setCurrentGameId',response.data.id)
 				console.log(response.data)
 				console.log(store.getters.getCurrentGameId)
+			})
+		},
+		getMission({commit}, {gameId, id}){
+			axios.get(URL+'game/'+gameId+'/mission/'+id).then(response =>{
+				commit('setSelectedMission',response.data)
+				commit('setCurrentMissionId',response.data.id)
+				console.log(response.data)
+				console.log(store.getters.getCurrentMissionId)
 			})
 		},
 		getAllPlayers({commit}, {gameId}){
@@ -165,6 +176,24 @@ const store = createStore({
 				Nw_Lng:Nw_Lng,
 				Se_Lat:Se_Lat,
 				Se_Lng:Se_Lng
+			})
+				.then(response => { 
+					console.log(response)
+				})
+				.catch((error) => {
+					if( error.response ){
+						console.log(error.response.data) 
+					}
+				})
+		},
+		postMission({commit}, {name, is_Human_Visible, is_Zombie_Visible, description, start_time, end_time}){
+			axios.post(URL+'game/'+ store.getters.getCurrentGameId +'/mission', {
+				name:name,
+				is_Human_Visible:is_Human_Visible,
+				is_Zombie_Visible:is_Zombie_Visible,
+				description:description,
+				start_time:start_time,
+				end_time:end_time
 			})
 				.then(response => { 
 					console.log(response)
@@ -293,6 +322,24 @@ const store = createStore({
 					}
 				})
 
+		},
+		PutMission({commit}, {name, is_Human_Visible, is_Zombie_Visible, description, start_time, end_time}){
+			axios.post(URL+'game/'+ store.getters.getCurrentGameId +'/mission', {
+				Name:name,
+				is_Human_Visible:is_Human_Visible,
+				is_Zombie_Visible:is_Zombie_Visible,
+				description:description,
+				start_time:start_time,
+				end_time:end_time
+			})
+				.then(response => { 
+					console.log(response)
+				})
+				.catch((error) => {
+					if( error.response ){
+						console.log(error.response.data) 
+					}
+				})
 		},
 		PutPlayerToZombie({commit},{userId,is_Human,is_Patient_Zero,bite_Code}){
 			axios.put(URL+'game/'+store.getters.getCurrentGameId+'/player/', {

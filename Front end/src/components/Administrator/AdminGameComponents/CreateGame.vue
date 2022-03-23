@@ -92,7 +92,7 @@ function createGame(){
             id='Nw_Lat'
             v-model='obj.Nw_Lat'
             type='number'
-            placeholder='number'
+            placeholder='Nw_Lat'
             class='border border-slate-800 m-2 input '
           >
           <input
