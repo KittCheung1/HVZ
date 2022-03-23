@@ -324,7 +324,7 @@ const store = createStore({
 
 		},
 		PutMission({commit}, {name, is_Human_Visible, is_Zombie_Visible, description, start_time, end_time}){
-			axios.post(URL+'game/'+ store.getters.getCurrentGameId +'/mission', {
+			axios.put(URL+'game/'+ store.getters.getCurrentGameId +'/mission/'+store.getters.getCurrentMissionId, {
 				Name:name,
 				is_Human_Visible:is_Human_Visible,
 				is_Zombie_Visible:is_Zombie_Visible,
