@@ -102,6 +102,14 @@ const store = createStore({
 				console.log(response.data)
 			})
 		},
+		getSelectedPlayer({commit}, {gameId, id}){
+			axios.get(URL+'game/'+gameId+'/player/'+id).then(response =>{
+				commit('setSelectedPlayer',response.data)
+				commit('setCurrentPlayerId',response.data.id)
+				console.log(response.data)
+				console.log(store.getters.getSelectedPlayer)
+			})
+		},
 		makeid({commit},{length}) {
 			var result           = ''
 			var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -324,13 +332,30 @@ const store = createStore({
 
 		},
 		PutMission({commit}, {name, is_Human_Visible, is_Zombie_Visible, description, start_time, end_time}){
-			axios.post(URL+'game/'+ store.getters.getCurrentGameId +'/mission', {
+			axios.put(URL+'game/'+ store.getters.getCurrentGameId +'/mission/'+store.getters.getCurrentMissionId, {
 				Name:name,
 				is_Human_Visible:is_Human_Visible,
 				is_Zombie_Visible:is_Zombie_Visible,
 				description:description,
 				start_time:start_time,
 				end_time:end_time
+			})
+				.then(response => { 
+					console.log(response)
+				})
+				.catch((error) => {
+					if( error.response ){
+						console.log(error.response.data) 
+					}
+				})
+		},
+		PutPlayer({commit}, {id, userId,is_Human,is_Patient_Zero,bite_Code}){
+			axios.put(URL+'game/'+ store.getters.getCurrentGameId +'/player/'+store.getters.getCurrentPlayerId, {
+				Id:id,
+				UserId:userId,
+				Is_human:is_Human,
+				Is_Patient_Zero:is_Patient_Zero,
+				Bite_Code:bite_Code,
 			})
 				.then(response => { 
 					console.log(response)
