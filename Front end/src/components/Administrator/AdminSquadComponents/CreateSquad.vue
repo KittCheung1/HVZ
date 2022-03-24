@@ -1,7 +1,25 @@
 <script setup>
-import { onMounted } from 'vue'
-import { useStore } from 'vuex'
-const store = useStore()
+import {onMounted, reactive, ref } from 'vue'
+import store from '../../../store'
+
+let id=ref(0)
+let name = ref('')
+let isHuman = ref(false)
+
+let obj = reactive({
+	name: name,
+	is_Human:isHuman,
+})
+
+function submitGame(){
+	store.dispatch('getGame', {gameId: id.value})
+	console.log(id.value)
+}
+
+function createSquad(){
+	store.dispatch('postSquad',obj)
+}
+
 onMounted(() => {
 	store.dispatch('getAllGames').then(
 		console.log(store.getters.getAllGames))
@@ -22,15 +40,23 @@ onMounted(() => {
           >Game List:</label>
           <select
             id='selectGame'
-            v-model='selectedGame'
+            v-model='id'
           >
             <option
               v-for='game in $store.getters.getAllGames'
               :key='game'
+              :value='game.id'
             >
               {{ game.name }}
             </option>
           </select>
+          <button
+            class='m-2'
+            type='button'
+            @click='submitGame()'
+          >
+            Submit
+          </button>
         </div>
         <div class='m-2'>
           <label
@@ -39,7 +65,7 @@ onMounted(() => {
           >Squad Name:</label>
           <input
             id='squadName'
-            v-model='squadName'
+            v-model='obj.name'
             type='text'
             placeholder='Squad Name'
             class='border border-slate-800'
@@ -51,7 +77,7 @@ onMounted(() => {
             for='is_human'
             class='block p-3'
           >Type:</label>
-          <select v-model='is_human'>
+          <select v-model='obj.isHuman'>
             <option
               disabled
               value
@@ -68,7 +94,10 @@ onMounted(() => {
         </div>
       </fieldset>
     </form>
-    <button class='m-3'>
+    <button
+      class='m-3'
+      @click='createSquad()'
+    >
       Create
     </button>
   </div>

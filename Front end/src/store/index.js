@@ -98,6 +98,14 @@ const store = createStore({
 				console.log(store.getters.getCurrentMissionId)
 			})
 		},
+		getSquad({commit}, {gameId, id}){
+			axios.get(URL+'game/'+gameId+'/squad/'+id).then(response =>{
+				commit('setSelectedSquad',response.data)
+				commit('setSelectedSquadId',response.data.id)
+				console.log(response.data)
+				console.log(store.getters.getCurrentSquadId)
+			})
+		},
 		getAllPlayers({commit}, {gameId}){
 			axios.get(URL+'game/'+gameId+'/player').then(response =>{
 				commit('setAllPlayers',response.data)
@@ -231,10 +239,10 @@ const store = createStore({
 					}
 				})
 		},
-		postSquad({commit}, {Name, IsHuman}){
+		postSquad({commit}, {name, isHuman}){
 			axios.post(URL+'game/'+store.getters.getCurrentGameId+'/squad', {
-				Name:Name,
-				IsHuman:IsHuman
+				Name:name,
+				IsHuman:isHuman
 			})
 				.then(response => { 
 					console.log(response)
@@ -373,13 +381,10 @@ const store = createStore({
 					}
 				})
 		},
-		PutPlayer({commit}, {id, userId,is_Human,is_Patient_Zero,bite_Code}){
-			axios.put(URL+'game/'+ store.getters.getCurrentGameId +'/player/'+store.getters.getCurrentPlayerId, {
-				Id:id,
-				UserId:userId,
-				Is_human:is_Human,
-				Is_Patient_Zero:is_Patient_Zero,
-				Bite_Code:bite_Code,
+		PutSquad({commit}, {name, isHuman}){
+			axios.put(URL+'game/'+ store.getters.getCurrentGameId +'/squad/'+store.getters.getCurrentSquadId, {
+				Name:name,
+				IsHuman:isHuman
 			})
 				.then(response => { 
 					console.log(response)
