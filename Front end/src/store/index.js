@@ -26,6 +26,7 @@ const store = createStore({
 		currentVictimId: 1,
 		allSquadmembers: reactive([]) 	,
 		selectedSquadmember: {},
+		allSquadmembersInGame: reactive([]),
 		selectedSquadId: 0,
 		selectedGameState: '',
 	},
@@ -184,6 +185,13 @@ const store = createStore({
 				return(response.data)
 			})
 
+		},
+		getAllSquadmembersInGame({commit}, {gameId}){
+			axios.get(URL+'game/'+gameId+'/allsquadmembers').then(response =>{
+				commit('setAllSquadmembersInGame',response.data)
+				console.log(response.data)
+				return(response.data)
+			})
 		},
 		postGame({commit}, {Name, GameState, Nw_Lat, Nw_Lng, Se_Lat, Se_Lng}){
 			axios.post(URL+'game/', {
@@ -345,6 +353,25 @@ const store = createStore({
 				}
 			})
 		},
+		postChat({commit}, {PlayerId, SquadId,Message,Is_Human_Global,Is_Zombie_Global,Chat_Time}){
+			axios.post(URL+'game/'+store.getters.getCurrentGameId+'/chat', {
+				PlayerId:PlayerId,
+				SquadId:SquadId,
+				Message:Message,
+				Is_Human_Global:Is_Human_Global,
+				Is_Zombie_Global:Is_Zombie_Global,
+				Chat_Time:Chat_Time,
+			})
+				.then(response => { 
+					console.log(response)
+					store.dispatch('getAllChats',{gameId:store.getters.getCurrentGameId})
+				})
+				.catch((error) => {
+					if( error.response ){
+						console.log(error.response.data) 
+					}
+				})
+		},
 		PutGame({commit},{name,game_state,nw_lat,nw_lng,se_lat,se_lng}){
 			axios.put(URL+'game/'+store.getters.getCurrentGameId, {
 				name:name,
@@ -413,6 +440,25 @@ const store = createStore({
 				})
 
 		},
+		PutPlayer({commit}, {id, userId,is_Human,is_Patient_Zero,bite_Code}){
+			axios.put(URL+'game/'+ store.getters.getCurrentGameId +'/player/'+store.getters.getCurrentPlayerId, {
+				Id:id,
+				UserId:userId,
+				Is_human:is_Human,
+				Is_Patient_Zero:is_Patient_Zero,
+				Bite_Code:bite_Code,
+			})
+				.then(response => { 
+					console.log(response)
+				})
+		},
+		deleteSquadmember({commit}, {SquadId,SquadmemberId}){
+			axios.delete(URL+'game/'+store.getters.getCurrentGameId+'/squad/'+SquadId+'/squadmember/'+SquadmemberId)
+			console.log('deleted')
+			setTimeout(function() { store.dispatch('getAllSquadmembersInGame',{gameId:store.getters.getCurrentGameId}) }, 300)
+		},
+
+		
 
 	}
 })
