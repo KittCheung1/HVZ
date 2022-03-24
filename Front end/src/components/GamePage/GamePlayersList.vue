@@ -2,9 +2,11 @@
 import { onMounted, reactive, ref } from '@vue/runtime-core'
 import store from '../../store'
 import axios from 'axios'
+import GameShowBiteCode from './GameShowBiteCode.vue'
 
 onMounted(()=>{
 	store.dispatch('getAllPlayers',{gameId:store.getters.getCurrentGameId})
+  
 })
 
 
@@ -34,7 +36,7 @@ function bitePlayer(CorrectCode,CheckCode,HumanId,story) {
 	if(CorrectCode === CheckCode){
 		store.dispatch('postKill',kill)
 
-		axios.put('http://testtest.northeurope.azurecontainer.io/game/'+store.getters.getCurrentGameId+'/player/'+HumanId, {
+		axios.put('http://fixedapi.westeurope.azurecontainer.io/game/'+store.getters.getCurrentGameId+'/player/'+HumanId, {
 			userId: store.getters.getCurrentUserId, 
 			is_Human: false, 
 			is_Patient_Zero: false,
@@ -70,6 +72,7 @@ let story = reactive({})
   <div
     class='text-center'
   >
+    <GameShowBiteCode />
     <h3>List of Players</h3>
     <div>
       <ul>

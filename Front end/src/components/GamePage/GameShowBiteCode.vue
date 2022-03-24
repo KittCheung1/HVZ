@@ -4,7 +4,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import store from '../../store'
     
-let currentPlayer = store.getters.getSelectedPlayer
+let currentPlayer = ref(store.getters.getSelectedPlayer)
 
 let isHidden = ref(true)
 
