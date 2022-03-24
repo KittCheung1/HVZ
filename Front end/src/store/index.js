@@ -19,6 +19,7 @@ const store = createStore({
 		selectedChat: {},
 		allChats: reactive([]),
 		currentGameId: 1,
+		currentMissionId: 1,
 		currentUserId: 4,
 		currentPlayerId: 0,
 		currentBiteCode: '',
@@ -26,8 +27,7 @@ const store = createStore({
 		allSquadmembers: reactive([]) 	,
 		selectedSquadmember: {},
 		selectedSquadId: 0,
-		allSquadmembersInGame: reactive([])
-
+		selectedGameState: '',
 	},
 	getters:{
 		getSelectedGame: state => state.selectedGame,
@@ -42,6 +42,7 @@ const store = createStore({
 		getAllSquads: state => state.allSquads,
 		getAllChats: state => state.allChats,
 		getCurrentGameId: state => state.currentGameId,
+		getCurrentMissionId: state=> state.currentMissionId,
 		getCurrentUserId: state => state.currentUserId,
 		getCurrentPlayerId: state => state.currentPlayerId,
 		getCurrentBiteCode: state => state.currentBiteCode,
@@ -65,6 +66,7 @@ const store = createStore({
 		setAllSquads (state, payload) {state.allSquads = payload},
 		setAllChats (state,payload) {state.allChats = payload},
 		setCurrentGameId (state,payload) {state.currentGameId = payload},
+		setCurrentMissionId (state,payload) {state.currentMissionId = payload},
 		setCurrentUserId (state,payload) {state.currentUserId = payload},
 		setCurrentPlayerId (state,payload) {state.currentPlayerId = payload},
 		setCurrentBiteCode (state,payload) {state.currentBiteCode = payload},
@@ -88,10 +90,34 @@ const store = createStore({
 				console.log(store.getters.getCurrentGameId)
 			})
 		},
+		getMission({commit}, {gameId, id}){
+			axios.get(URL+'game/'+gameId+'/mission/'+id).then(response =>{
+				commit('setSelectedMission',response.data)
+				commit('setCurrentMissionId',response.data.id)
+				console.log(response.data)
+				console.log(store.getters.getCurrentMissionId)
+			})
+		},
+		getSquad({commit}, {gameId, id}){
+			axios.get(URL+'game/'+gameId+'/squad/'+id).then(response =>{
+				commit('setSelectedSquad',response.data)
+				commit('setSelectedSquadId',response.data.id)
+				console.log(response.data)
+				console.log(store.getters.getCurrentSquadId)
+			})
+		},
 		getAllPlayers({commit}, {gameId}){
 			axios.get(URL+'game/'+gameId+'/player').then(response =>{
 				commit('setAllPlayers',response.data)
 				console.log(response.data)
+			})
+		},
+		getSelectedPlayer({commit}, {gameId, id}){
+			axios.get(URL+'game/'+gameId+'/player/'+id).then(response =>{
+				commit('setSelectedPlayer',response.data)
+				commit('setCurrentPlayerId',response.data.id)
+				console.log(response.data)
+				console.log(store.getters.getSelectedPlayer)
 			})
 		},
 		makeid({commit},{length}) {
@@ -159,12 +185,41 @@ const store = createStore({
 			})
 
 		},
-		getAllSquadmembersInGame({commit}, {gameId}){
-			axios.get(URL+'game/'+gameId+'/allsquadmembers').then(response =>{
-				commit('setAllSquadmembersInGame',response.data)
-				console.log(response.data)
-				return(response.data)
+		postGame({commit}, {Name, GameState, Nw_Lat, Nw_Lng, Se_Lat, Se_Lng}){
+			axios.post(URL+'game/', {
+				Name:Name,
+				Game_state:parseInt(GameState),
+				Nw_Lat:Nw_Lat,
+				Nw_Lng:Nw_Lng,
+				Se_Lat:Se_Lat,
+				Se_Lng:Se_Lng
 			})
+				.then(response => { 
+					console.log(response)
+				})
+				.catch((error) => {
+					if( error.response ){
+						console.log(error.response.data) 
+					}
+				})
+		},
+		postMission({commit}, {name, is_Human_Visible, is_Zombie_Visible, description, start_time, end_time}){
+			axios.post(URL+'game/'+ store.getters.getCurrentGameId +'/mission', {
+				name:name,
+				is_Human_Visible:is_Human_Visible,
+				is_Zombie_Visible:is_Zombie_Visible,
+				description:description,
+				start_time:start_time,
+				end_time:end_time
+			})
+				.then(response => { 
+					console.log(response)
+				})
+				.catch((error) => {
+					if( error.response ){
+						console.log(error.response.data) 
+					}
+				})
 		},
 		postPlayer({commit},{userId,is_Human,is_Patient_Zero,bite_Code}){
 			axios.post(URL+'game/'+store.getters.getCurrentGameId+'/player', {
@@ -184,10 +239,10 @@ const store = createStore({
 					}
 				})
 		},
-		postSquad({commit}, {Name, IsHuman}){
+		postSquad({commit}, {name, isHuman}){
 			axios.post(URL+'game/'+store.getters.getCurrentGameId+'/squad', {
-				Name:Name,
-				IsHuman:IsHuman
+				Name:name,
+				IsHuman:isHuman
 			})
 				.then(response => { 
 					console.log(response)
@@ -290,18 +345,36 @@ const store = createStore({
 				}
 			})
 		},
-		postChat({commit}, {PlayerId, SquadId,Message,Is_Human_Global,Is_Zombie_Global,Chat_Time}){
-			axios.post(URL+'game/'+store.getters.getCurrentGameId+'/chat', {
-				PlayerId:PlayerId,
-				SquadId:SquadId,
-				Message:Message,
-				Is_Human_Global:Is_Human_Global,
-				Is_Zombie_Global:Is_Zombie_Global,
-				Chat_Time:Chat_Time,
+		PutGame({commit},{name,game_state,nw_lat,nw_lng,se_lat,se_lng}){
+			axios.put(URL+'game/'+store.getters.getCurrentGameId, {
+				name:name,
+				game_state:game_state,
+				nw_lat:nw_lat,
+				nw_lng:nw_lng,
+				se_lat:se_lat,
+				se_lng:se_lng
 			})
 				.then(response => { 
 					console.log(response)
-					store.dispatch('getAllChats',{gameId:store.getters.getCurrentGameId})
+				})
+				.catch((error) => {
+					if( error.response ){
+						console.log(error.response.data) 
+					}
+				})
+
+		},
+		PutMission({commit}, {name, is_Human_Visible, is_Zombie_Visible, description, start_time, end_time}){
+			axios.put(URL+'game/'+ store.getters.getCurrentGameId +'/mission/'+store.getters.getCurrentMissionId, {
+				Name:name,
+				is_Human_Visible:is_Human_Visible,
+				is_Zombie_Visible:is_Zombie_Visible,
+				description:description,
+				start_time:start_time,
+				end_time:end_time
+			})
+				.then(response => { 
+					console.log(response)
 				})
 				.catch((error) => {
 					if( error.response ){
@@ -309,11 +382,38 @@ const store = createStore({
 					}
 				})
 		},
-		deleteSquadmember({commit}, {SquadId,SquadmemberId}){
-			axios.delete(URL+'game/'+store.getters.getCurrentGameId+'/squad/'+SquadId+'/squadmember/'+SquadmemberId)
-			console.log('deleted')
-			setTimeout(function() { store.dispatch('getAllSquadmembersInGame',{gameId:store.getters.getCurrentGameId}) }, 400)
+		PutSquad({commit}, {name, isHuman}){
+			axios.put(URL+'game/'+ store.getters.getCurrentGameId +'/squad/'+store.getters.getCurrentSquadId, {
+				Name:name,
+				IsHuman:isHuman
+			})
+				.then(response => { 
+					console.log(response)
+				})
+				.catch((error) => {
+					if( error.response ){
+						console.log(error.response.data) 
+					}
+				})
 		},
+		PutPlayerToZombie({commit},{userId,is_Human,is_Patient_Zero,bite_Code}){
+			axios.put(URL+'game/'+store.getters.getCurrentGameId+'/player/', {
+				userId: userId, 
+				is_Human: false, 
+				is_Patient_Zero: false,
+				bite_Code: bite_Code
+			})
+				.then(response => { 
+					console.log(response)
+				})
+				.catch((error) => {
+					if( error.response ){
+						console.log(error.response.data) 
+					}
+				})
+
+		},
+
 	}
 })
 

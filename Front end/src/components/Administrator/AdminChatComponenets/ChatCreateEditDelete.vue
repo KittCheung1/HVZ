@@ -8,41 +8,53 @@ const activeNavSelect = ref('1')
 </script>
 
 <template>
-    <ul class="nav nav-pills mt-2 d-flex justify-content-center">
-        <input
-            type="radio"
-            class="btn-check"
-            name="chatBtnRadio"
-            id="btnRadioCreate"
-            autocomplete="off"
-            @click="activeNavSelect = '1'"
-            checked
-        />
-        <label class="btn btn-outline-primary m-2" for="btnRadioCreate">Create</label>
-        <input
-            type="radio"
-            class="btn-check"
-            name="chatBtnRadio"
-            id="btnRadioEdit"
-            autocomplete="off"
-            @click="activeNavSelect = '2'"
-        />
-        <label class="btn btn-outline-primary m-2" for="btnRadioEdit">Edit</label>
-        <input
-            type="radio"
-            class="btn-check"
-            name="chatBtnRadio"
-            id="btnRadioDelete"
-            autocomplete="off"
-            @click="activeNavSelect = '3'"
-        />
-        <label class="btn btn-outline-primary m-2" for="btnRadioDelete">Delete</label>
-    </ul>
-    <div class="m-3" aria-label = "AdminNavBar">
-        <CreateChat v-if="activeNavSelect === '1'" />
-        <EditChat v-if="activeNavSelect === '2'" />
-        <DeleteChat v-if="activeNavSelect === '3'" />
-    </div>
+  <ul class='nav nav-pills mt-2 d-flex justify-content-center'>
+    <input
+      id='btnRadioCreate'
+      type='radio'
+      class='btn-check'
+      name='chatBtnRadio'
+      autocomplete='off'
+      checked
+      @click='activeNavSelect = &apos;1&apos;'
+    >
+    <label
+      class='btn btn-outline-primary m-2'
+      for='btnRadioCreate'
+    >Create</label>
+    <input
+      id='btnRadioEdit'
+      type='radio'
+      class='btn-check'
+      name='chatBtnRadio'
+      autocomplete='off'
+      @click='activeNavSelect = &apos;2&apos;'
+    >
+    <label
+      class='btn btn-outline-primary m-2'
+      for='btnRadioEdit'
+    >Edit</label>
+    <input
+      id='btnRadioDelete'
+      type='radio'
+      class='btn-check'
+      name='chatBtnRadio'
+      autocomplete='off'
+      @click='activeNavSelect = &apos;3&apos;'
+    >
+    <label
+      class='btn btn-outline-primary m-2'
+      for='btnRadioDelete'
+    >Delete</label>
+  </ul>
+  <div
+    class='m-3'
+    aria-label='AdminNavBar'
+  >
+    <CreateChat v-if='activeNavSelect === &apos;1&apos;' />
+    <EditChat v-if='activeNavSelect === &apos;2&apos;' />
+    <DeleteChat v-if='activeNavSelect === &apos;3&apos;' />
+  </div>
 </template>
 
 <style>
