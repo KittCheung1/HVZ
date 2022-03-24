@@ -20,7 +20,7 @@ function joinSquad(squadid, IsHuman, i){
 		console.log('You: '+store.getters.getCurrentPlayerId+'have joined a human squad wtih id :'+squadid+', Welcome!')
 		
 	} else {
-		console.log('You have joined a zombie squad with id:'+squadid+', Time to hunt!')
+		console.log('You'+store.getters.getCurrentPlayerId+' have joined a zombie squad with id:'+squadid+', Time to hunt!')
 	}
 	let member = {
 		Rank: rank[i],

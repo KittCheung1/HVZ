@@ -267,6 +267,7 @@ const store = createStore({
 					console.log(response)
 					commit('setCurrentVictimId',response.VictimId)
 					setTimeout(function() { store.dispatch('getAllPlayers',{gameId:store.getters.getCurrentGameId}) }, 100)
+					setTimeout(function() { store.dispatch('getAllKills',{gameId:store.getters.getCurrentGameId}) }, 100)
 					changedUser = {
 						userId: VictimId, 
 						is_Human: false, 

@@ -8,7 +8,7 @@ onMounted(()=>{
 	store.dispatch('getAllChats',{gameId:store.getters.getCurrentGameId})
 })
 
-
+setInterval(() => {	store.dispatch('getAllChats',{gameId:store.getters.getCurrentGameId})}, 5000)
 function bitePlayer(bitecode) {
 	console.log(bitecode)
 }
