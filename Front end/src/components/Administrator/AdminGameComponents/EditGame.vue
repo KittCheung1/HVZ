@@ -2,6 +2,7 @@
 import { onMounted, reactive, ref } from 'vue'
 import store from '../../../store'
 
+let id=ref(0)
 
 function submitGame(){
 	store.dispatch('getGame', {gameId: id.value})
@@ -20,7 +21,6 @@ onMounted(() => {
 		console.log(store.getters.getAllGames))
 })
 
-let id=ref(0)
 
 </script>
 
@@ -49,6 +49,7 @@ let id=ref(0)
             </option>
           </select>
           <button
+            class='m-2' 
             type='button'
             @click='submitGame()'
           >
@@ -143,7 +144,7 @@ let id=ref(0)
     </form>
     <button
       type='button'
-      class='m-3 '
+      class='m-3'
       @click='editGame()'
     >
       Save Changes

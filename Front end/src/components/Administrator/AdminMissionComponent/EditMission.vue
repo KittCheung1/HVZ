@@ -1,11 +1,29 @@
 <script setup>
+import { onMounted, ref } from 'vue'
+import store from '../../../store'
 
+let id=ref(0)
+let missionId=ref(0)
 
-import { onMounted } from 'vue'
-import { useStore } from 'vuex'
-const store = useStore()
+function submitGame(){
+	store.dispatch('getGame', {gameId: id.value})
+	store.dispatch('getAllMissions', {gameId: id.value})
+	store.commit('setCurrentGameId', id.value)
+	console.log(id.value)
+}
+
+function submitMission(){
+	store.dispatch('getMission', {gameId:id.value, id:missionId.value })
+	store.commit('setCurrentMissionId', missionId.value)
+
+}
+
+function editMission(){
+	store.dispatch('PutMission', store.getters.getSelectedMission)
+	console.log(store.getters.getSelectedMission)
+}
+
 onMounted(() => {
-	store.dispatch('getAllMissions')
 	store.dispatch('getAllGames').then(
 		console.log(store.getters.getAllGames))
 })
@@ -25,38 +43,66 @@ onMounted(() => {
           >Game List:</label>
           <select
             id='selectGame'
-            v-model='selectedGame'
+            v-model='id'
           >
             <option
-              v-for='game in $store.getters.getAllGames'
+              v-for='game in store.getters.getAllGames'
               :key='game'
+              :value='game.id'
             >
               {{ game.name }}
             </option>
           </select>
+          <button
+            class='m-2'
+            type='button'
+            @click='submitGame()'
+          >
+            Submit
+          </button>
+        </div>
+        <div class='m-2'>
+          <label
+            for='missionName'
+            class='block p-3'
+          >Mission List:</label>
+          <select
+            id='selectMission'
+            v-model='missionId'
+          >
+            <option
+              v-for='mission in store.getters.getAllMissions'
+              :key='mission'
+              :value='mission.id'
+            >
+              {{ mission.name }}
+            </option>
+          </select>
+          <button
+            class='m-2'
+            type='button'
+            @click='submitMission()'
+          >
+            Submit
+          </button>
         </div>
         <div class='m-2'>
           <label
             for='missionName'
             class='block p-3'
           >Mission Name:</label>
-          <select
-            id='selectMission'
-            v-model='selectedMission'
+          <input
+            id='missionName'
+            v-model='store.getters.getSelectedMission.name'
+            type='text'
+            class='border border-slate-800'
           >
-            <option
-              v-for='mission in $store.getters.getAllMissions'
-              :key='mission'
-            >
-              {{ mission.name }}
-            </option>
-          </select>
         </div>
 
         <div class='m-4'>
           <textarea
             id='m_description'
-            v-model='m_description'
+            v-model='store.getters.getSelectedMission.description'
             type='textarea'
             placeholder='Mission Description'
             class='border border-slate-800'
@@ -64,12 +110,12 @@ onMounted(() => {
             cols='33'
           />
         </div>
-        <div class='m-2 coordinates'>
+        <div class='m-2'>
           <label
             for='is_human'
             class='block p-3'
-          >Type:</label>
-          <select v-model='is_human'>
+          >Is Human:</label>
+          <select v-model='store.getters.getSelectedMission.is_Human_Visible'>
             <option
               disabled
               value
@@ -77,10 +123,30 @@ onMounted(() => {
               Please select one
             </option>
             <option :value='true'>
-              Human
+              True
             </option>
             <option :value='false'>
-              Zombie
+              False
+            </option>
+          </select>
+        </div>
+        <div class='m-2'>
+          <label
+            for='is_zombie'
+            class='block p-3'
+          >Is Zombie:</label>
+          <select v-model='store.getters.getSelectedMission.is_Zombie_Visible'>
+            <option
+              disabled
+              value
+            >
+              Please select one
+            </option>
+            <option :value='true'>
+              True
+            </option>
+            <option :value='false'>
+              False
             </option>
           </select>
         </div>
@@ -91,7 +157,7 @@ onMounted(() => {
           >Start Time:</label>
           <input
             id='startTime'
-            v-model='startTime'
+            v-model='store.getters.getSelectedMission.start_time'
             type='time'
             class='border border-slate-800 m-2 input'
           >
@@ -101,14 +167,17 @@ onMounted(() => {
           >End Time:</label>
           <input
             id='endTime'
-            v-model='endTime'
+            v-model='store.getters.getSelectedMission.end_time'
             type='time'
             class='border border-slate-800 m-2 input'
           >
         </div>
       </fieldset>
     </form>
-    <button class='m-3 '>
+    <button
+      class='m-3'
+      @click='editMission()'
+    >
       Save Changes
     </button>
   </div>
