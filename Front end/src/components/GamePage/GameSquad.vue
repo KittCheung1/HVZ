@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import store from '../../store'
 import GameSquadCreation from './GameSquadCreation.vue'
@@ -7,10 +7,13 @@ import GameSquadCreation from './GameSquadCreation.vue'
 
 onMounted(()=>{
 	store.dispatch('getAllSquads',{gameId:store.getters.getCurrentGameId})
+	console.log(store.getters.getAllSquadmembersInGame)
+	store.dispatch('getAllSquadmembersInGame',{ gameId:store.getters.getCurrentGameId}).then(checkIfInSquad())
+
 })
 
 
-function joinSquad(squadid, IsHuman){
+function joinSquad(squadid, IsHuman, i){
   	store.commit('setSelectedSquadId',squadid)
   	console.log('SquadId: '+store.getters.getSelectedSquadId)
 	if(IsHuman){
@@ -20,23 +23,38 @@ function joinSquad(squadid, IsHuman){
 		console.log('You have joined a zombie squad with id:'+squadid+', Time to hunt!')
 	}
 	let member = {
-		Rank: 'Private',
+		Rank: rank[i],
 		SquadId:squadid
 	}
 
-
+	console.log(member)
 	store.dispatch('PostSquadmemberIfNotFound',member)
+	if(member.Rank != undefined){
+		inSquad.value = true
+	}
 }
 
-
-function showSquadmembers(squadid){
-	hidden.value = !hidden.value
-
-	store.dispatch('getAllSquadmembers',{gameId:store.getters.getCurrentGameId, squadId:squadid})
-
+function checkIfInSquad(){
+  
+	for(let i = 0; i < store.getters.getAllSquadmembersInGame.length; i++){
+		console.log(store.getters.getAllSquadmembersInGame[i].playerId)
+		if(store.getters.getCurrentPlayerId === store.getters.getAllSquadmembersInGame[i].playerId){
+			inSquad.value = true
+			return
+			
+		}
+	}
 	
 }
 
+function leaveSquad(squadId, squadmemberId){
+	console.log('squad Id:'+squadId+'memberId: '+squadmemberId)
+	store.dispatch('deleteSquadmember',{SquadId:squadId,SquadmemberId:squadmemberId})
+	inSquad.value = false
+}
+
+let rank = reactive([])
+let inSquad = ref(false)
 let hidden = ref(false)
 </script>
 
@@ -47,7 +65,7 @@ let hidden = ref(false)
     <div>
       <ul>
         <li
-          v-for='squadItem in $store.getters.getAllSquads '
+          v-for='(squadItem,i) in $store.getters.getAllSquads '
           :key='squadItem'
         >
           <template v-if='squadItem.isHuman === true || squadItem.isHuman === 1'>
@@ -55,12 +73,43 @@ let hidden = ref(false)
               <h5>{{ squadItem.name }}</h5>
               <p> Squad Id: {{ squadItem.id }}</p>
               <template v-if='$store.getters.getSelectedPlayer.is_Human'> 
-                <button @click='joinSquad(squadItem.id, squadItem.isHuman)'>
-                  Join Squad
-                </button>
-                <button @click='showSquadmembers(squadItem.id)'>
-                  Console members
-                </button>
+                <div v-if='inSquad == false'>
+                  <select
+                    v-model='rank[i]'
+                  >
+                    <option
+                      value=''
+                      disabled
+                    >
+                      Choose your rank
+                    </option>
+                    <option selected>
+                      Scout
+                    </option>
+                    <option selected>
+                      Fighter
+                    </option>
+                    <option> Technician </option>
+                  </select>
+                  <button @click='joinSquad(squadItem.id, squadItem.isHuman,i)'>
+                    Join Squad
+                  </button>
+                </div>
+             
+                <ul>
+                  <li
+                    v-for='memberItem, in $store.getters.getAllSquadmembersInGame'
+                    :key='memberItem'
+                    class='squadmember'
+                  >
+                    <template v-if='memberItem.squadId === squadItem.id'>
+                      <p> Rank: {{ memberItem.rank }}</p>
+                      <button @click='leaveSquad(squadItem.id,memberItem.id)'>
+                        Leave Squad
+                      </button>
+                    </template>
+                  </li>
+                </ul>
               </template>
             </div>
           </template>
@@ -69,12 +118,48 @@ let hidden = ref(false)
               <h5>{{ squadItem.name }}</h5>
               <p> Squad Id: {{ squadItem.id }}</p>
               <template v-if='!$store.getters.getSelectedPlayer.is_Human'> 
-                <button @click='joinSquad(squadItem.id, squadItem.isHuman)'>
-                  Join Squad
-                </button>
-                <button @click='showSquadmembers(squadItem.id)'>
-                  Console members
-                </button>
+                <div v-if='inSquad == false'>
+                  <select
+                    v-model='rank[i]'
+                    required
+                  >
+                    <option
+                      value=''
+                      disabled
+                    >
+                      Choose your rank
+                    </option>
+                    <option>
+                      Biter
+                    </option>
+                    <option selected>
+                      Runner
+                    </option>
+                    <option> Tank </option>
+                  </select>
+                  <button @click='joinSquad(squadItem.id, squadItem.isHuman,i)'>
+                    Join Squad
+                  </button>
+                </div>
+                <ul>
+                  <li
+                    v-for='memberItem in $store.getters.getAllSquadmembersInGame'
+                    :key='memberItem'
+                    class='squadmember'
+                  >
+                    <template v-if='memberItem.squadId === squadItem.id'>
+                      <div class='members'>
+                        <p>Rank: {{ memberItem.rank }}</p>
+                        <p>Player ID: {{ memberItem.playerId }}</p>
+                        <div>
+                          <button @click='leaveSquad(squadItem.id,memberItem.id)'>
+                            Leave Squad
+                          </button>
+                        </div>
+                      </div>
+                    </template>
+                  </li>
+                </ul>
               </template>
             </div>
           </template>
@@ -101,5 +186,12 @@ li{
     background-color: #befaea;
     border: 2px solid black;
     margin-bottom: 2%;
+}
+.squadmember{
+   border: none;
+}
+.members{
+  border: 2px solid black;
+  margin-bottom: 10px;
 }
 </style>
