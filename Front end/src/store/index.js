@@ -2,7 +2,7 @@ import { createStore, Store } from 'vuex'
 import axios from 'axios'
 import { reactive,ref } from 'vue'
 
-let URL = 'http://hvzapi.northeurope.azurecontainer.io/'
+let URL = 'http://beforelast.northeurope.azurecontainer.io/'
 
 const store = createStore({
 	state:{

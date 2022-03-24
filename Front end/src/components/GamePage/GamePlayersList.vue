@@ -47,7 +47,7 @@ function bitePlayer(CorrectCode,CheckCode,HumanId,story,lat,lng) {
 	if(CorrectCode === CheckCode){
 		store.dispatch('postKill',kill)
 
-		axios.put('http://hvzapi.northeurope.azurecontainer.io/game/'+store.getters.getCurrentGameId+'/player/'+HumanId, {
+		axios.put('http://beforelast.northeurope.azurecontainer.io/game/'+store.getters.getCurrentGameId+'/player/'+HumanId, {
 			userId: store.getters.getCurrentUserId, 
 			is_Human: false, 
 			is_Patient_Zero: false,
@@ -107,12 +107,13 @@ let lng = reactive({})
                 placeholder='Story of kill'
               >
               <input
-              v-model ='lat[i]'
-              placeholder='lat'
+                v-model='lat[i]'
+                placeholder='lat'
               >
-               <input
-              v-model ='lng[i]'
-              placeholder='lng'>
+              <input
+                v-model='lng[i]'
+                placeholder='lng'
+              >
               <button @click='bitePlayer(playerItem.bite_Code,bittenCode[i], playerItem.id,story[i],lat[i],lng[i])'>
                 Sumbit Kill
               </button>
