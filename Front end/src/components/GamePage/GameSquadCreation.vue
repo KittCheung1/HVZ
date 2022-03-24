@@ -5,18 +5,18 @@ import { useRouter } from 'vue-router'
 import store from '../../store'
     
       
-
-let namer = ref('')
-let ishuman = ref(false)
+let name = ref('')
+let isHuman = ref(false)
 
 let obj = reactive({
-	Name: namer,
-	IsHuman: ishuman
+	name: name,
+	is_Human:isHuman,
 })
-
 
 function createSquad(){
 	store.dispatch('postSquad',obj)
+
+	console.log(obj)
 }
 
 let isHidden = ref(true)
@@ -32,11 +32,11 @@ let isHidden = ref(true)
   <div v-if='!isHidden'>
     <p>Squad Name</p>
     <input
-      v-model='namer'
+      v-model='obj.name'
       placeholder='Squad Name'
     >
     <p>Squad Type</p>
-    <select v-model='ishuman'>
+    <select v-model='obj.isHuman'>
       <option
         disabled
         value=''
